@@ -1,0 +1,630 @@
+Initialized native services in: C:\Users\amonf\.gradle\native
+Initialized jansi services in: C:\Users\amonf\.gradle\native
+
+Welcome to Gradle 8.13!
+
+Here are the highlights of this release:
+ - Daemon JVM auto-provisioning
+ - Enhancements for Scala plugin and JUnit testing
+ - Improvements for build authors and plugin developers
+
+For more details see https://docs.gradle.org/8.13/release-notes.html
+
+The client will now receive all logging from the daemon (pid: 4444). The daemon log file: C:\Users\amonf\.gradle\daemon\8.13\daemon-4444.out.log
+Starting 11th build in daemon [uptime: 25 mins 21.481 secs, performance: 98%, GC rate: 0.00/s, heap usage: 0% of 2 GiB]
+Using 16 worker leases.
+Now considering [D:\Proyectos\SpamStopper2.0] as hierarchies to watch
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file 'D:\Proyectos\SpamStopper2.0\settings.gradle.kts'.
+Projects loaded. Root project using build file 'D:\Proyectos\SpamStopper2.0\build.gradle.kts'.
+Included projects: [root project 'SpamStopper', project ':app']
+
+> Configure project :
+Evaluating root project 'SpamStopper' using build file 'D:\Proyectos\SpamStopper2.0\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application', version: '8.1.4', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '1.9.22', apply: false]
+Resolved plugin [id: 'com.google.dagger.hilt.android', version: '2.50', apply: false]
+Resolved plugin [id: 'com.google.devtools.ksp', version: '1.9.22-1.0.17', apply: false]
+
+> Configure project :app
+Evaluating project ':app' using build file 'D:\Proyectos\SpamStopper2.0\app\build.gradle.kts'.
+Resolved plugin [id: 'com.android.application']
+Resolved plugin [id: 'org.jetbrains.kotlin.android']
+Resolved plugin [id: 'com.google.dagger.hilt.android']
+Resolved plugin [id: 'com.google.devtools.ksp']
+Using default execution profile
+Using Kotlin Gradle Plugin gradle82 variant
+Parsed shrinker version: 8.1.68
+All projects evaluated.
+Task name matched 'clean'
+Task name matched 'assembleDebug'
+Selected primary task 'clean' from project :
+Selected primary task 'assembleDebug' from project :
+Tasks to be executed: [task ':app:clean', task ':app:preBuild', task ':app:preDebugBuild', task ':app:mergeDebugNativeDebugMetadata', task ':app:checkKotlinGradlePluginConfigurationErrors', task ':app:checkDebugAarMetadata', task ':app:generateDebugResValues', task ':app:mapDebugSourceSetPaths', task ':app:generateDebugResources', task ':app:mergeDebugResources', task ':app:packageDebugResources', task ':app:parseDebugLocalResources', task ':app:createDebugCompatibleScreenManifests', task ':app:extractDeepLinksDebug', task ':app:processDebugMainManifest', task ':app:processDebugManifest', task ':app:processDebugManifestForPackage', task ':app:processDebugResources', task ':app:kspDebugKotlin', task ':app:compileDebugKotlin', task ':app:javaPreCompileDebug', task ':app:compileDebugJavaWithJavac', task ':app:mergeDebugShaders', task ':app:compileDebugShaders', task ':app:generateDebugAssets', task ':app:mergeDebugAssets', task ':app:compressDebugAssets', task ':app:desugarDebugFileDependencies', task ':app:hiltAggregateDepsDebug', task ':app:hiltJavaCompileDebug', task ':app:transformDebugClassesWithAsm', task ':app:dexBuilderDebug', task ':app:mergeDebugGlobalSynthetics', task ':app:processDebugJavaRes', task ':app:mergeDebugJavaResource', task ':app:checkDebugDuplicateClasses', task ':app:mergeExtDexDebug', task ':app:mergeLibDexDebug', task ':app:mergeProjectDexDebug', task ':app:mergeDebugJniLibFolders', task ':app:mergeDebugNativeLibs', task ':app:stripDebugDebugSymbols', task ':app:validateSigningDebug', task ':app:writeDebugAppMetadata', task ':app:writeDebugSigningConfigVersions', task ':app:packageDebug', task ':app:createDebugApkListingFileRedirect', task ':app:assembleDebug']
+Tasks that were excluded: []
+Resolve mutations for :app:clean (Thread[#1761,Execution worker,5,main]) started.
+:app:clean (Thread[#1761,Execution worker,5,main]) started.
+destroyer locations for task group 0 (Thread[#1762,Execution worker Thread 2,5,main]) started.
+
+> Task :app:clean
+Caching disabled for task ':app:clean' because:
+  Build cache is disabled
+Task ':app:clean' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :app:preBuild (Thread[#1761,Execution worker,5,main]) started.
+:app:preBuild (Thread[#1761,Execution worker,5,main]) started.
+
+> Task :app:preBuild UP-TO-DATE
+Skipping task ':app:preBuild' as it has no actions.
+Resolve mutations for :app:preDebugBuild (Thread[#1761,Execution worker,5,main]) started.
+:app:preDebugBuild (Thread[#1761,Execution worker,5,main]) started.
+
+> Task :app:preDebugBuild UP-TO-DATE
+Skipping task ':app:preDebugBuild' as it has no actions.
+Resolve mutations for :app:mergeDebugNativeDebugMetadata (Thread[#1761,Execution worker,5,main]) started.
+:app:mergeDebugNativeDebugMetadata (Thread[#1761,Execution worker,5,main]) started.
+
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+Skipping task ':app:mergeDebugNativeDebugMetadata' as it has no source files and no previous output files.
+Resolve mutations for :app:checkKotlinGradlePluginConfigurationErrors (Thread[#1761,Execution worker,5,main]) started.
+:app:checkKotlinGradlePluginConfigurationErrors (Thread[#1771,Execution worker Thread 11,5,main]) started.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+Caching disabled for task ':app:checkKotlinGradlePluginConfigurationErrors' because:
+  Build cache is disabled
+Task ':app:checkKotlinGradlePluginConfigurationErrors' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :app:checkDebugAarMetadata (Thread[#1771,Execution worker Thread 11,5,main]) started.
+:app:checkDebugAarMetadata (Thread[#1771,Execution worker Thread 11,5,main]) started.
+Resolve mutations for :app:generateDebugResValues (Thread[#1766,Execution worker Thread 6,5,main]) started.
+:app:generateDebugResValues (Thread[#1766,Execution worker Thread 6,5,main]) started.
+
+> Task :app:generateDebugResValues
+Caching disabled for task ':app:generateDebugResValues' because:
+  Build cache is disabled
+Task ':app:generateDebugResValues' is not up-to-date because:
+  Output property 'outputDirectory' file D:\Proyectos\SpamStopper2.0\app\build\generated\res\resValues\debug has been removed.
+Resolve mutations for :app:mapDebugSourceSetPaths (Thread[#1766,Execution worker Thread 6,5,main]) started.
+:app:mapDebugSourceSetPaths (Thread[#1766,Execution worker Thread 6,5,main]) started.
+
+> Task :app:checkDebugAarMetadata
+Caching disabled for task ':app:checkDebugAarMetadata' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Task ':app:checkDebugAarMetadata' is not up-to-date because:
+  Output property 'dummyOutputDirectory' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\aar_metadata_check\debug has been removed.
+
+> Task :app:mapDebugSourceSetPaths
+Caching disabled for task ':app:mapDebugSourceSetPaths' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Task ':app:mapDebugSourceSetPaths' is not up-to-date because:
+  Output property 'filepathMappingFile' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\source_set_path_map\debug\file-map.txt has been removed.
+Resolve mutations for :app:generateDebugResources (Thread[#1766,Execution worker Thread 6,5,main]) started.
+:app:generateDebugResources (Thread[#1766,Execution worker Thread 6,5,main]) started.
+
+> Task :app:generateDebugResources
+Skipping task ':app:generateDebugResources' as it has no actions.
+Resolve mutations for :app:mergeDebugResources (Thread[#1766,Execution worker Thread 6,5,main]) started.
+:app:mergeDebugResources (Thread[#1766,Execution worker Thread 6,5,main]) started.
+Resolve mutations for :app:packageDebugResources (Thread[#1772,Execution worker Thread 12,5,main]) started.
+:app:packageDebugResources (Thread[#1772,Execution worker Thread 12,5,main]) started.
+
+> Task :app:packageDebugResources
+Caching disabled for task ':app:packageDebugResources' because:
+  Build cache is disabled
+Task ':app:packageDebugResources' is not up-to-date because:
+  Output property 'dataBindingLayoutInfoOutFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\data_binding_layout_info_type_package\debug\out has been removed.
+  Output property 'incrementalFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\packageDebugResources has been removed.
+  Output property 'incrementalFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\packageDebugResources\compile-file-map.properties has been removed.
+  and more...
+The input changes require a full rebuild for incremental task ':app:packageDebugResources'.
+[MergeResources] Inputs are non-incremental full task action.
+Resolve mutations for :app:parseDebugLocalResources (Thread[#1772,Execution worker Thread 12,5,main]) started.
+:app:parseDebugLocalResources (Thread[#1772,Execution worker Thread 12,5,main]) started.
+Resolve mutations for :app:createDebugCompatibleScreenManifests (Thread[#1767,Execution worker Thread 7,5,main]) started.
+:app:createDebugCompatibleScreenManifests (Thread[#1767,Execution worker Thread 7,5,main]) started.
+
+> Task :app:createDebugCompatibleScreenManifests
+Caching disabled for task ':app:createDebugCompatibleScreenManifests' because:
+  Build cache is disabled
+  Caching has been disabled for the task
+Task ':app:createDebugCompatibleScreenManifests' is not up-to-date because:
+  Output property 'outputFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\compatible_screen_manifest\debug has been removed.
+  Output property 'outputFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\compatible_screen_manifest\debug\output-metadata.json has been removed.
+Resolve mutations for :app:extractDeepLinksDebug (Thread[#1767,Execution worker Thread 7,5,main]) started.
+:app:extractDeepLinksDebug (Thread[#1767,Execution worker Thread 7,5,main]) started.
+
+> Task :app:extractDeepLinksDebug
+Caching disabled for task ':app:extractDeepLinksDebug' because:
+  Build cache is disabled
+Task ':app:extractDeepLinksDebug' is not up-to-date because:
+  Output property 'navigationJson' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\navigation_json\debug\navigation.json has been removed.
+Resolve mutations for :app:processDebugMainManifest (Thread[#1767,Execution worker Thread 7,5,main]) started.
+:app:processDebugMainManifest (Thread[#1767,Execution worker Thread 7,5,main]) started.
+
+> Task :app:parseDebugLocalResources
+Caching disabled for task ':app:parseDebugLocalResources' because:
+  Build cache is disabled
+Task ':app:parseDebugLocalResources' is not up-to-date because:
+  Output property 'librarySymbolsFile' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\local_only_symbol_list\debug\R-def.txt has been removed.
+The input changes require a full rebuild for incremental task ':app:parseDebugLocalResources'.
+
+> Task :app:mergeDebugResources
+Caching disabled for task ':app:mergeDebugResources' because:
+  Build cache is disabled
+Task ':app:mergeDebugResources' is not up-to-date because:
+  Output property 'blameLogOutputFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res_blame_folder\debug\out has been removed.
+  Output property 'blameLogOutputFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res_blame_folder\debug\out\multi-v2 has been removed.
+  Output property 'blameLogOutputFolder' file D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res_blame_folder\debug\out\multi-v2\debug.json has been removed.
+  and more...
+The input changes require a full rebuild for incremental task ':app:mergeDebugResources'.
+[MergeResources] Inputs are non-incremental full task action.
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values\values.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values_values.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-hi\values-hi.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-hi_values-hi.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-de\values-de.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-de_values-de.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-uz\values-uz.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-uz_values-uz.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-lo\values-lo.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-lo_values-lo.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-fr-rCA\values-fr-rCA.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-fr-rCA_values-fr-rCA.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-pt\values-pt.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-pt_values-pt.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-iw\values-iw.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-iw_values-iw.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-lt\values-lt.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-lt_values-lt.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-mr\values-mr.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-mr_values-mr.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-es\values-es.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-es_values-es.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-af\values-af.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-af_values-af.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-fa\values-fa.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-fa_values-fa.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-lv\values-lv.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-lv_values-lv.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-in\values-in.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-in_values-in.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-et\values-et.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-et_values-et.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ro\values-ro.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ro_values-ro.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-hr\values-hr.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-hr_values-hr.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-eu\values-eu.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-eu_values-eu.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sk\values-sk.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sk_values-sk.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ar\values-ar.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ar_values-ar.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-nl\values-nl.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-nl_values-nl.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-mn\values-mn.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-mn_values-mn.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ms\values-ms.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ms_values-ms.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sl\values-sl.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sl_values-sl.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-hu\values-hu.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-hu_values-hu.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-el\values-el.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-el_values-el.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-zh-rCN\values-zh-rCN.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-zh-rCN_values-zh-rCN.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-gu\values-gu.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-gu_values-gu.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-en-rIN\values-en-rIN.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-en-rIN_values-en-rIN.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ca\values-ca.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ca_values-ca.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ru\values-ru.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ru_values-ru.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-b+sr+Latn\values-b+sr+Latn.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-b+sr+Latn_values-b+sr+Latn.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-hy\values-hy.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-hy_values-hy.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-uk\values-uk.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-uk_values-uk.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-v16\values-v16.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-v16_values-v16.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ur\values-ur.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ur_values-ur.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-cs\values-cs.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-cs_values-cs.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-as\values-as.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-as_values-as.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-vi\values-vi.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-vi_values-vi.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-zh-rTW\values-zh-rTW.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-zh-rTW_values-zh-rTW.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sq\values-sq.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sq_values-sq.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-mk\values-mk.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-mk_values-mk.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-zh-rHK\values-zh-rHK.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-zh-rHK_values-zh-rHK.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_15.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_15.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-zu\values-zu.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-zu_values-zu.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-am\values-am.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-am_values-am.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sr\values-sr.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sr_values-sr.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-it\values-it.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-it_values-it.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\nav_header_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_nav_header_main.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-te\values-te.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-te_values-te.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-be\values-be.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-be_values-be.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-v21\values-v21.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-v21_values-v21.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-fi\values-fi.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-fi_values-fi.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-pa\values-pa.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-pa_values-pa.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-nb\values-nb.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-nb_values-nb.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-my\values-my.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-my_values-my.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\item_transform.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_item_transform.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ka\values-ka.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ka_values-ka.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ja\values-ja.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ja_values-ja.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-is\values-is.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-is_values-is.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-w600dp-v13\values-w600dp-v13.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-w600dp-v13_values-w600dp-v13.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\menu\bottom_navigation.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\menu_bottom_navigation.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xxhdpi\ic_launcher.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xxhdpi_ic_launcher.webp.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w600dp\activity_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w600dp_activity_main.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-kk\values-kk.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-kk_values-kk.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-en-rXC\values-en-rXC.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-en-rXC_values-en-rXC.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-az\values-az.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-az_values-az.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-night-v8\values-night-v8.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-night-v8_values-night-v8.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_gallery_black_24dp.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_gallery_black_24dp.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-th\values-th.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-th_values-th.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-km\values-km.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-km_values-km.arsc.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-mdpi\ic_launcher_round.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-mdpi_ic_launcher_round.webp.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-bg\values-bg.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-bg_values-bg.arsc.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xxhdpi\ic_launcher_round.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xxhdpi_ic_launcher_round.webp.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-es-rUS\values-es-rUS.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-es-rUS_values-es-rUS.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-pt-rBR\values-pt-rBR.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-pt-rBR_values-pt-rBR.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-en-rCA\values-en-rCA.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-en-rCA_values-en-rCA.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ne\values-ne.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ne_values-ne.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-bn\values-bn.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-bn_values-bn.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w600dp\app_bar_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w600dp_app_bar_main.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\side_nav_bar.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_side_nav_bar.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_9.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_9.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-tl\values-tl.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-tl_values-tl.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\fragment_transform.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_fragment_transform.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-en-rGB\values-en-rGB.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-en-rGB_values-en-rGB.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w1240dp\app_bar_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w1240dp_app_bar_main.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w1240dp\content_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w1240dp_content_main.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xxxhdpi\ic_launcher_round.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xxxhdpi_ic_launcher_round.webp.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-kn\values-kn.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-kn_values-kn.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-fr\values-fr.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-fr_values-fr.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sw\values-sw.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sw_values-sw.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-bs\values-bs.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-bs_values-bs.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_8.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_8.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-or\values-or.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-or_values-or.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_slideshow_black_24dp.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_slideshow_black_24dp.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ko\values-ko.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ko_values-ko.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_14.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_14.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-pl\values-pl.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-pl_values-pl.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\menu\navigation_drawer.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\menu_navigation_drawer.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_13.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_13.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w600dp\item_transform.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w600dp_item_transform.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ml\values-ml.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ml_values-ml.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\xml\data_extraction_rules.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\xml_data_extraction_rules.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_7.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_7.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ta\values-ta.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ta_values-ta.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-da\values-da.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-da_values-da.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-gl\values-gl.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-gl_values-gl.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-sv\values-sv.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-sv_values-sv.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_6.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_6.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_launcher_foreground.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_launcher_foreground.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_12.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_12.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\content_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_content_main.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_launcher_background.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_launcher_background.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-tr\values-tr.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-tr_values-tr.arsc.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-w936dp-v13\values-w936dp-v13.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-w936dp-v13_values-w936dp-v13.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_11.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_11.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xhdpi\ic_launcher_round.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xhdpi_ic_launcher_round.webp.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xhdpi\ic_launcher.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xhdpi_ic_launcher.webp.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-anydpi\ic_launcher.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-anydpi_ic_launcher.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_10.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_10.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-pt-rPT\values-pt-rPT.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-pt-rPT_values-pt-rPT.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_5.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_5.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\xml\backup_rules.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\xml_backup_rules.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w600dp\content_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w600dp_content_main.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-xxxhdpi\ic_launcher.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-xxxhdpi_ic_launcher.webp.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-en-rAU\values-en-rAU.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-en-rAU_values-en-rAU.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\fragment_reflow.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_fragment_reflow.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\activity_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_activity_main.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-hdpi\ic_launcher.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-hdpi_ic_launcher.webp.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\fragment_slideshow.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_fragment_slideshow.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\fragment_settings.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_fragment_settings.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-si\values-si.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-si_values-si.arsc.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-hdpi\ic_launcher_round.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-hdpi_ic_launcher_round.webp.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_4.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_4.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_1.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_1.xml.flat
+Compiling file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-mdpi\ic_launcher.webp to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-mdpi_ic_launcher.webp.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout\app_bar_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout_app_bar_main.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w600dp\fragment_transform.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w600dp_fragment_transform.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_3.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_3.xml.flat
+Compiling XML table D:\Proyectos\SpamStopper2.0\app\build\intermediates\incremental\debug\mergeDebugResources\merged.dir\values-ky\values-ky.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\values-ky_values-ky.arsc.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_settings_black_24dp.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_settings_black_24dp.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\ic_camera_black_24dp.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_ic_camera_black_24dp.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\mipmap-anydpi\ic_launcher_round.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\mipmap-anydpi_ic_launcher_round.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_16.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_16.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\drawable\avatar_2.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\drawable_avatar_2.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\menu\overflow.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\menu_overflow.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\layout-w1240dp\activity_main.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\layout-w1240dp_activity_main.xml.flat
+Compiling xml file D:\Proyectos\SpamStopper2.0\app\src\main\res\navigation\mobile_navigation.xml to D:\Proyectos\SpamStopper2.0\app\build\intermediates\merged_res\debug\navigation_mobile_navigation.xml.flat
+
+> Task :app:processDebugMainManifest FAILED
+Caching disabled for task ':app:processDebugMainManifest' because:
+  Build cache is disabled
+Task ':app:processDebugMainManifest' is not up-to-date because:
+  Task has failed previously.
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\fc24fab182e5d68a3de92fd44a04517a\transformed\hilt-navigation-compose-1.1.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\b6aa062daa57583ddc424eb4a22bde24\transformed\hilt-navigation-1.1.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\7c26893c49884109b8cfc860d94b80f0\transformed\navigation-common-2.7.6\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\9a715971d370860a69e16ec906f79ade\transformed\navigation-runtime-2.7.6\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\0b5ddc9acd48e66bbc23edb371531adf\transformed\navigation-common-ktx-2.7.6\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\12a66365eb77cd496b5f20715932c040\transformed\navigation-runtime-ktx-2.7.6\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\cfc229838582fdcf56e75276670d3670\transformed\navigation-compose-2.7.6\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\b983472d939552e082a161e38df86a52\transformed\material3-1.1.2\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\b0d4907076fdddd8a67775a8f8c274fe\transformed\material-ripple-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\232d6b3031872fe64c0b2247532db517\transformed\material-icons-core-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\3d0da1b4be8c47c01bb0f70ce248f9e5\transformed\material-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\9606c6bd839450d2bd14b4efda65843f\transformed\animation-core-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\c26932e47a8e6bd0ba6a64d6db41afe0\transformed\animation-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\7e8c700056961b1b149f1f00b6346fb1\transformed\foundation-layout-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\2be96e16c9fa4105ec0ee301a0008830\transformed\foundation-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\4b58938d5885f8bc94c4c1520e3d1958\transformed\ui-tooling-data-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\9cd3bc2ef0ee66d0a3e591787b74417d\transformed\ui-unit-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\196e01d55c457823f7cea513b3e35080\transformed\ui-geometry-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\a74fdc4c4e99197b919d7eb2f830279a\transformed\ui-util-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\cfdf4a38b7267d6e7c27955b9b7100f6\transformed\ui-text-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\22feb16d0e688792052c7a1cf6533773\transformed\ui-tooling-preview-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e6beff9c3d3a711881d25f551f4a98cc\transformed\ui-tooling-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\fa14e8b21daa5262fd6539fa849ce058\transformed\ui-graphics-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\56465ccdfa0a1a944bf3bbfd22a867fd\transformed\ui-test-manifest-1.6.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\93c6b72aeb1bd4c9d2c89499413218af\transformed\hilt-android-2.50\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\6418dfced87240d6a12ebcf118fde72b\transformed\fragment-1.5.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e345bcdfdfac116fc3da3d0ef0abbd24\transformed\activity-1.8.2\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\8674bfb5a3a44eb8c03f2a07d5464fa0\transformed\activity-ktx-1.8.2\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\33c4eef52e5eeedacc13dcaa4adc5708\transformed\activity-compose-1.8.2\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\415692292b1f1681b804cc6572f6b486\transformed\loader-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\5034116c099282926569e90c3ad0d8d4\transformed\emoji2-1.3.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e46fe3b0ae2bfe3cd7b744eb3004f6b8\transformed\lifecycle-process-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\f4bb555c7f36a98d678036f3cc1ce286\transformed\lifecycle-livedata-core-ktx-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\f32458b359eff57cb2b77f5adecf9e43\transformed\lifecycle-livedata-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\96fdc660478c147708a07debd6a8149b\transformed\lifecycle-livedata-core-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\88775143d1a52aa0070379b254c0f418\transformed\lifecycle-viewmodel-ktx-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\da7424d8ae8c717bb4a7b10374155d98\transformed\lifecycle-viewmodel-savedstate-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\6dae4a7bd9ee0e11dff8c65ca1b31f42\transformed\savedstate-ktx-1.2.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\23345f504a1c1d34a1f4ed2e18c03420\transformed\savedstate-1.2.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\a5ad40d492db61262fcc4a5c35a6ebad\transformed\lifecycle-viewmodel-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\d2f23838e6c0813ec63c5d633ece01dd\transformed\lifecycle-runtime-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\10cdfa6367df8a16a6b0422fea9bea8f\transformed\lifecycle-runtime-ktx-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\14755920813f34ae91a41c59cee541fc\transformed\lifecycle-viewmodel-compose-2.7.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\334eab41598b131feec2ab10584c1942\transformed\ui-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e4c82a6fbcdf1c72e71d2cff57c57e5f\transformed\viewpager-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\9f4c5e717c886cd8f43e9de10a8859b6\transformed\autofill-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\8bc8579eb6cc366fe4856a41b36a46ab\transformed\customview-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\bcf48e2533788dd3f66e1f920e61ab59\transformed\core-1.12.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\7e3f52e60e29d01ced660834cc045dca\transformed\customview-poolingcontainer-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\79edbb626196bcebffb99d7cdb14634c\transformed\core-ktx-1.12.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\f564a449b63931989b7afaa6e6e2fd6a\transformed\room-runtime-2.6.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\a5e499d05155096ffefc2fef8a06d37f\transformed\room-ktx-2.6.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e1b9f466fa0818cce54db5fe46fffd88\transformed\android-database-sqlcipher-4.5.4\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\2c88d7869742253f62188f706fc2b526\transformed\sqlite-framework-2.4.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\3a56d2c7defa8c793e5607a3e4ed92c1\transformed\sqlite-2.4.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\4df24a67ffa81ec1c31f5cb12e346c9d\transformed\sqlite-ktx-2.4.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\d8c869e793f970f8bf98616193625673\transformed\datastore-preferences-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\1519c4b72c508b57498bd61180621df0\transformed\annotation-experimental-1.3.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\c41a4d0c6482c3da687d661defb8c459\transformed\datastore-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\0aeeab9727f0ca4a9202566b84bca411\transformed\runtime-saveable-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\a04fa9467d2e4153e437fdf23dade7c1\transformed\runtime-release\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\58b8824f55bd43e4db138320d6584a27\transformed\versionedparcelable-1.1.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\8f5fb047abcd9d404f4449c46f9ea104\transformed\core-runtime-2.2.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\93820689237a94d7300b9f6c6bd59320\transformed\interpolator-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\415375ba29e15e1a387447c4b97818ff\transformed\profileinstaller-1.3.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\f4eb0b04353dd4a01d079e6cf35e5e05\transformed\startup-runtime-1.1.1\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\80848b1c374bd3e20bd8be2fdc6302fd\transformed\tracing-1.0.0\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\4864e8345ceffab80052369358af4720\transformed\vosk-android-0.3.47\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\e396812caf50c187609315f25e9b046a\transformed\dagger-lint-aar-2.50\AndroidManifest.xml
+Loading library manifest C:\Users\amonf\.gradle\caches\8.13\transforms\ac7f06561b05d5e47703738e0c364793\transformed\jna-5.13.0\AndroidManifest.xml
+Merging main manifest D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml
+
+Merging result: ERROR
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:4:5-75 Error:
+	Missing 'name' key attribute on element uses-permission at AndroidManifest.xml:4:5-75
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:5:5-77 Error:
+	Missing 'name' key attribute on element uses-permission at AndroidManifest.xml:5:5-77
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:6:5-71 Error:
+	Missing 'name' key attribute on element uses-permission at AndroidManifest.xml:6:5-71
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:13:9-20:20 Error:
+	Missing 'name' key attribute on element activity at AndroidManifest.xml:13:9-20:20
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:16:13-19:29 Error:
+	Missing one of the key attributes 'action#name,category#name,data#scheme,data#host,data#mimeType,data#port,data#path,data#pathPattern,data#pathPrefix' on element intent-filter at AndroidManifest.xml:16:13-19:29
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:17:17-69 Error:
+	Missing 'name' key attribute on element action at AndroidManifest.xml:17:17-69
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:18:17-77 Error:
+	Missing 'name' key attribute on element category at AndroidManifest.xml:18:17-77
+D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml Error:
+	Validation failed, exiting
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:2:1-24:12
+	xmlns:android
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:2:11-77
+uses-permission
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:4:5-75
+	android:name
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:4:22-72
+application
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:8:5-22:19
+	android:icon
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:11:9-43
+	android:name
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:9:9-39
+	android:label
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:10:9-41
+activity
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:13:9-20:20
+	android:exported
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:15:13-36
+	android:name
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:14:13-54
+intent-filter
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:16:13-19:29
+action
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:17:17-69
+	android:name
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:17:25-66
+category
+ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:18:17-77
+	android:name
+		ADDED from D:\Proyectos\SpamStopper2.0\app\src\main\AndroidManifest.xml:18:27-74
+
+
+See https://developer.android.com/r/studio-ui/build/manifest-merger for more information about the manifest merger.
+
+
+[Incubating] Problems report is available at: file:///D:/Proyectos/SpamStopper2.0/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:processDebugMainManifest'.
+> Manifest merger failed with multiple errors, see logs
+
+* Try:
+> Run with --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':app:processDebugMainManifest'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: java.lang.RuntimeException: Manifest merger failed with multiple errors, see logs
+	at com.android.build.gradle.internal.tasks.manifest.ManifestHelperKt.mergeManifests(ManifestHelper.kt:125)
+	at com.android.build.gradle.internal.tasks.manifest.ManifestHelperKt.mergeManifests$default(ManifestHelper.kt:46)
+	at com.android.build.gradle.tasks.ProcessApplicationManifest.doTaskAction(ProcessApplicationManifest.kt:178)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask$taskAction$$inlined$recordTaskAction$1.invoke(BaseTask.kt:66)
+	at com.android.build.gradle.internal.tasks.Blocks.recordSpan(Blocks.java:51)
+	at com.android.build.gradle.internal.tasks.NonIncrementalTask.taskAction(NonIncrementalTask.kt:97)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(Unknown Source)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.doExecute(StandardTaskAction.java:58)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:40)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1s
+11 actionable tasks: 11 executed
+Watched directory hierarchies: [D:\Proyectos\SpamStopper2.0]

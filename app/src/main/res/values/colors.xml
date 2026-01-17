@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Colores primarios SpamStopper -->
+    <color name="primary">#2563EB</color>              <!-- Azul profesional -->
+    <color name="primary_variant">#1E40AF</color>      <!-- Azul oscuro -->
+
+    <!-- Colores secundarios -->
+    <color name="secondary">#10B981</color>            <!-- Verde éxito -->
+    <color name="secondary_variant">#059669</color>    <!-- Verde oscuro -->
+
+    <!-- Colores funcionales -->
+    <color name="error">#EF4444</color>                <!-- Rojo error/spam -->
+    <color name="warning">#F59E0B</color>              <!-- Amarillo advertencia -->
+    <color name="success">#10B981</color>              <!-- Verde confirmación -->
+    <color name="info">#3B82F6</color>                 <!-- Azul información -->
+
+    <!-- Neutrales (Light Mode) -->
+    <color name="background">#F9FAFB</color>           <!-- Gris casi blanco -->
+    <color name="surface">#FFFFFF</color>              <!-- Blanco puro -->
+    <color name="surface_variant">#F3F4F6</color>     <!-- Gris claro -->
+    <color name="on_surface">#111827</color>           <!-- Gris oscuro texto -->
+    <color name="on_surface_variant">#6B7280</color>  <!-- Gris medio texto -->
+
+    <!-- Colores básicos -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+
+    <!-- Colores de categorías (para UI) -->
+    <color name="category_sales">#EF4444</color>       <!-- Rojo -->
+    <color name="category_insurance">#F59E0B</color>   <!-- Naranja -->
+    <color name="category_lottery">#FBBF24</color>     <!-- Amarillo -->
+    <color name="category_utilities">#3B82F6</color>   <!-- Azul -->
+    <color name="category_other">#6B7280</color>       <!-- Gris -->
+
+    <!-- Transparencias -->
+    <color name="overlay_dark">#80000000</color>       <!-- Negro 50% -->
+    <color name="overlay_light">#80FFFFFF</color>      <!-- Blanco 50% -->
+
+    <!-- Neutrales (Dark Mode) -->
+    <color name="background_dark">#111827</color>
+    <color name="surface_dark">#1F2937</color>
+    <color name="surface_variant_dark">#374151</color>
+    <color name="on_surface_dark">#F9FAFB</color>
+    <color name="on_surface_variant_dark">#9CA3AF</color>
+
+</resources>

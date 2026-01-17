@@ -1,0 +1,565 @@
+# 🗺️ ROADMAP SPAMSTOPPER 2.0
+## De App Básica a Gestor de Teléfono Completo
+
+---
+
+## 📋 ESTADO ACTUAL
+
+### ✅ Completado:
+- Arquitectura Clean + MVVM + Hilt
+- Base de datos cifrada (Room + SQLCipher)
+- VoskSTTEngine integrado
+- CallAnalysisOrchestrator
+- Material Design 3
+- Compilación exitosa
+
+### ❌ Falta Implementar:
+- Registrar como app de teléfono predeterminada
+- Dialer/marcador minimalista
+- Gestión de contactos
+- Lógica de filtrado inteligente
+- Palabras clave de emergencia
+- UI pulida
+
+---
+
+## 🎯 FASE 1: REGISTRO COMO APP DE TELÉFONO
+**Objetivo:** Que SpamStopper intercepte las llamadas
+
+### Task 1.1: Implementar CallScreeningService
+**Archivo:** `app/src/main/java/com/spamstopper/app/services/SpamCallScreeningService.kt`
+
+**Contenido:**
+```kotlin
+package com.spamstopper.app.services
+
+import android.telecom.Call
+import android.telecom.CallScreeningService
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+
+@AndroidEntryPoint
+class SpamCallScreeningService : CallScreeningService() {
+    
+    @Inject
+    lateinit var callAnalysisOrchestrator: CallAnalysisOrchestrator
+    
+    override fun onScreenCall(callDetails: Call.Details) {
+        // Implementar lógica de screening
+    }
+}
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 2 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 1.2: Actualizar AndroidManifest
+**Archivo:** `app/src/main/AndroidManifest.xml`
+
+**Agregar:**
+```xml
+<service
+    android:name=".services.SpamCallScreeningService"
+    android:permission="android.permission.BIND_SCREENING_SERVICE"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.telecom.CallScreeningService" />
+    </intent-filter>
+</service>
+```
+
+**Permisos adicionales:**
+```xml
+<uses-permission android:name="android.permission.READ_CONTACTS" />
+<uses-permission android:name="android.permission.READ_CALL_LOG" />
+<uses-permission android:name="android.permission.CALL_PHONE" />
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 30 minutos  
+**Dependencias:** Task 1.1
+
+---
+
+### Task 1.3: Activity de configuración inicial
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/setup/SetupActivity.kt`
+
+**Función:**
+- Solicitar permisos necesarios
+- Pedir al usuario que establezca SpamStopper como app de teléfono predeterminada
+- Configuración inicial (palabras clave, etc.)
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 1.2
+
+---
+
+## 🎯 FASE 2: DIALER MINIMALISTA
+**Objetivo:** Que el usuario pueda hacer llamadas sin cambiar de app
+
+### Task 2.1: Diseñar UI del Dialer
+**Archivo:** `app/src/main/res/layout/fragment_dialer.xml`
+
+**Componentes:**
+- Teclado numérico (0-9, *, #)
+- Campo de texto para número
+- Botón de llamada
+- Botón para acceder a contactos
+- Botón para historial
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 4 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 2.2: DialerViewModel
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/dialer/DialerViewModel.kt`
+
+**Funciones:**
+- Validar número de teléfono
+- Iniciar llamada
+- Gestionar estado del teclado
+- Acceso rápido a últimas llamadas
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 2.1
+
+---
+
+### Task 2.3: DialerFragment
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/dialer/DialerFragment.kt`
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 2 horas  
+**Dependencias:** Task 2.1, 2.2
+
+---
+
+## 🎯 FASE 3: GESTIÓN DE CONTACTOS Y FAVORITOS
+**Objetivo:** Acceso rápido a contactos frecuentes
+
+### Task 3.1: ContactsRepository
+**Archivo:** `app/src/main/java/com/spamstopper/app/data/repository/ContactsRepository.kt`
+
+**Funciones:**
+- Leer contactos del sistema
+- Guardar favoritos en Room
+- Verificar si número es contacto guardado
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 3 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 3.2: UI de Favoritos
+**Archivo:** `app/src/main/res/layout/fragment_favorites.xml`
+
+**Componentes:**
+- Lista de contactos favoritos
+- Botón para añadir/quitar favoritos
+- Llamada rápida con un toque
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 3.1
+
+---
+
+### Task 3.3: ContactsViewModel
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/contacts/ContactsViewModel.kt`
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 2 horas  
+**Dependencias:** Task 3.1
+
+---
+
+## 🎯 FASE 4: HISTORIAL DE LLAMADAS
+**Objetivo:** Ver llamadas hechas, recibidas y perdidas
+
+### Task 4.1: CallHistoryRepository
+**Archivo:** `app/src/main/java/com/spamstopper/app/data/repository/CallHistoryRepository.kt`
+
+**Funciones:**
+- Leer historial del sistema
+- Combinar con datos de Room (análisis IA)
+- Filtrar por tipo (todas/perdidas/bloqueadas)
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 3 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 4.2: UI de Historial
+**Archivo:** `app/src/main/res/layout/fragment_history.xml`
+
+**Componentes:**
+- Lista de llamadas recientes
+- Iconos por tipo (entrada/salida/perdida/bloqueada)
+- Detalles de análisis IA (si aplica)
+- Acción rápida: devolver llamada
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 4 horas  
+**Dependencias:** Task 4.1
+
+---
+
+### Task 4.3: HistoryViewModel
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/history/HistoryViewModel.kt`
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 2 horas  
+**Dependencias:** Task 4.1
+
+---
+
+## 🎯 FASE 5: LÓGICA DE FILTRADO INTELIGENTE
+**Objetivo:** Implementar reglas de negocio para gestión automática
+
+### Task 5.1: Actualizar CallAnalysisOrchestrator
+**Archivo:** `app/src/main/java/com/spamstopper/app/services/ai/CallAnalysisOrchestrator.kt`
+
+**Nueva lógica:**
+```kotlin
+suspend fun analyzeCall(phoneNumber: String, audioData: ByteArray): CallDecision {
+    // 1. ¿Es contacto guardado?
+    if (contactsRepository.isContact(phoneNumber)) {
+        return CallDecision.ALLOW_DIRECT // Pasar sin analizar
+    }
+    
+    // 2. Transcribir audio
+    val transcript = voskSTTEngine.transcribe(audioData)
+    
+    // 3. Detectar robot/IVR
+    if (isRobotCall(transcript)) {
+        return CallDecision.BLOCK_ROBOT // Bloquear automáticamente
+    }
+    
+    // 4. Detectar palabras clave de emergencia
+    if (hasEmergencyKeywords(transcript)) {
+        return CallDecision.ALERT_EMERGENCY // Notificar urgente
+    }
+    
+    // 5. Analizar spam con IA
+    val spamScore = analyzeSpam(transcript)
+    return if (spamScore > 0.7) {
+        CallDecision.BLOCK_SPAM
+    } else {
+        CallDecision.ALLOW
+    }
+}
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 5 horas  
+**Dependencias:** Task 3.1
+
+---
+
+### Task 5.2: Implementar EmergencyKeywordDetector
+**Archivo:** `app/src/main/java/com/spamstopper/app/services/ai/EmergencyKeywordDetector.kt`
+
+**Palabras clave:**
+```kotlin
+private val emergencyKeywords = listOf(
+    // Familia
+    "mamá", "madre", "papá", "padre", "hijo", "hija",
+    "hermano", "hermana", "abuelo", "abuela",
+    
+    // Emergencias
+    "emergencia", "urgente", "ayuda", "socorro",
+    "accidente", "hospital", "ambulancia",
+    "fuego", "incendio", "policía",
+    
+    // Trabajo
+    "trabajo", "jefe", "reunión urgente", "despido",
+    "oficina", "cliente importante"
+)
+
+fun hasEmergencyKeywords(transcript: String): Boolean {
+    val lowerTranscript = transcript.lowercase()
+    return emergencyKeywords.any { lowerTranscript.contains(it) }
+}
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 2 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 5.3: Implementar RobotCallDetector
+**Archivo:** `app/src/main/java/com/spamstopper/app/services/ai/RobotCallDetector.kt`
+
+**Patrones de IVR:**
+```kotlin
+private val robotPatterns = listOf(
+    Regex("pulse.*\\d+", RegexOption.IGNORE_CASE),
+    Regex("presione.*\\d+", RegexOption.IGNORE_CASE),
+    Regex("marque.*\\d+", RegexOption.IGNORE_CASE),
+    Regex("oprima.*\\d+", RegexOption.IGNORE_CASE),
+    Regex("para.*pulse", RegexOption.IGNORE_CASE)
+)
+
+fun isRobotCall(transcript: String): Boolean {
+    return robotPatterns.any { it.containsMatchIn(transcript) }
+}
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 2 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 5.4: CallDecision enum
+**Archivo:** `app/src/main/java/com/spamstopper/app/domain/model/CallDecision.kt`
+
+```kotlin
+enum class CallDecision {
+    ALLOW_DIRECT,      // Contacto guardado, pasar directo
+    ALLOW,             // Número desconocido, pero no spam
+    BLOCK_SPAM,        // Detectado como spam
+    BLOCK_ROBOT,       // Detectado como robot/IVR
+    ALERT_EMERGENCY    // Palabras clave de emergencia
+}
+```
+
+**Prioridad:** 🔴 CRÍTICA  
+**Estimación:** 30 minutos  
+**Dependencias:** Ninguna
+
+---
+
+## 🎯 FASE 6: NOTIFICACIONES Y FEEDBACK
+**Objetivo:** Informar al usuario de decisiones automáticas
+
+### Task 6.1: NotificationHelper
+**Archivo:** `app/src/main/java/com/spamstopper/app/utils/NotificationHelper.kt`
+
+**Tipos de notificaciones:**
+- 🚨 Emergencia detectada
+- 🤖 Robot bloqueado
+- 🚫 Spam bloqueado
+- ✅ Llamada analizada (modo debug)
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 5.4
+
+---
+
+### Task 6.2: Integrar notificaciones en CallScreeningService
+**Archivo:** `app/src/main/java/com/spamstopper/app/services/SpamCallScreeningService.kt`
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 1 hora  
+**Dependencias:** Task 6.1
+
+---
+
+## 🎯 FASE 7: UI/UX MEJORADA
+**Objetivo:** Interfaz profesional y pulida
+
+### Task 7.1: Rediseñar MainActivity
+**Archivo:** `app/src/main/res/layout/activity_main.xml`
+
+**Estructura:**
+- BottomNavigationBar con 4 tabs:
+  - 📞 Dialer
+  - ⭐ Favoritos
+  - 📋 Historial
+  - ⚙️ Configuración
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 4 horas  
+**Dependencias:** Tasks 2.1, 3.2, 4.2
+
+---
+
+### Task 7.2: Temas y colores Material 3
+**Archivo:** `app/src/main/res/values/themes.xml`
+
+**Paleta de colores:**
+- Primary: Azul profesional (#1976D2)
+- Secondary: Verde seguridad (#4CAF50)
+- Error: Rojo spam (#F44336)
+- Surface: Blanco/Gris claro
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 2 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 7.3: Animaciones y transiciones
+**Prioridad:** 🔵 BAJA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 7.1
+
+---
+
+## 🎯 FASE 8: CONFIGURACIÓN Y PREFERENCIAS
+**Objetivo:** Permitir al usuario personalizar el comportamiento
+
+### Task 8.1: SettingsFragment
+**Archivo:** `app/src/main/java/com/spamstopper/app/presentation/settings/SettingsFragment.kt`
+
+**Opciones:**
+- ✅ Activar/desactivar bloqueo automático
+- 🎤 Sensibilidad del micrófono
+- 📝 Ver/editar palabras clave de emergencia
+- 🔔 Configurar notificaciones
+- 🗑️ Limpiar historial
+- ℹ️ Acerca de / Tutorial
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 4 horas  
+**Dependencias:** Ninguna
+
+---
+
+### Task 8.2: UserPreferences actualizado
+**Archivo:** `app/src/main/java/com/spamstopper/app/data/preferences/UserPreferences.kt`
+
+**Nuevas preferencias:**
+- `autoBlockRobots: Boolean`
+- `emergencyKeywordsCustom: List<String>`
+- `notificationsEnabled: Boolean`
+- `micSensitivity: Float`
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 2 horas  
+**Dependencias:** Task 8.1
+
+---
+
+## 🎯 FASE 9: TESTING Y PULIDO
+**Objetivo:** Asegurar calidad y estabilidad
+
+### Task 9.1: Unit tests para lógica de negocio
+**Archivos:**
+- `CallAnalysisOrchestratorTest.kt`
+- `EmergencyKeywordDetectorTest.kt`
+- `RobotCallDetectorTest.kt`
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 6 horas  
+**Dependencias:** Fase 5 completa
+
+---
+
+### Task 9.2: Pruebas de integración
+**Escenarios:**
+- Llamada de contacto guardado
+- Llamada spam
+- Llamada robot
+- Llamada con emergencia
+- Hacer llamada saliente
+
+**Prioridad:** 🟡 ALTA  
+**Estimación:** 4 horas  
+**Dependencias:** Todas las fases anteriores
+
+---
+
+### Task 9.3: Optimización de rendimiento
+- Reducir latencia de análisis
+- Optimizar uso de batería
+- Liberar recursos correctamente
+
+**Prioridad:** 🟢 MEDIA  
+**Estimación:** 3 horas  
+**Dependencias:** Task 9.2
+
+---
+
+## 📊 RESUMEN DE ESTIMACIONES
+
+| Fase | Tareas | Horas Estimadas | Prioridad |
+|------|--------|----------------|-----------|
+| Fase 1: Registro como app de teléfono | 3 | 5.5h | 🔴 CRÍTICA |
+| Fase 2: Dialer minimalista | 3 | 9h | 🟡 ALTA |
+| Fase 3: Contactos y favoritos | 3 | 8h | 🟡 ALTA |
+| Fase 4: Historial de llamadas | 3 | 9h | 🟢 MEDIA |
+| Fase 5: Lógica de filtrado | 4 | 11.5h | 🔴 CRÍTICA |
+| Fase 6: Notificaciones | 2 | 4h | 🟡 ALTA |
+| Fase 7: UI/UX mejorada | 3 | 9h | 🟢 MEDIA |
+| Fase 8: Configuración | 2 | 6h | 🟢 MEDIA |
+| Fase 9: Testing y pulido | 3 | 13h | 🟡 ALTA |
+| **TOTAL** | **26 tareas** | **~75 horas** | - |
+
+---
+
+## 🎯 ORDEN DE IMPLEMENTACIÓN RECOMENDADO
+
+### Sprint 1 (Funcionalidad Básica) - ~20 horas
+1. Task 1.1: CallScreeningService
+2. Task 1.2: AndroidManifest
+3. Task 5.4: CallDecision enum
+4. Task 5.2: EmergencyKeywordDetector
+5. Task 5.3: RobotCallDetector
+6. Task 5.1: CallAnalysisOrchestrator actualizado
+
+**Objetivo:** App que intercepta y analiza llamadas
+
+---
+
+### Sprint 2 (Dialer y Contactos) - ~17 horas
+7. Task 2.1: UI del Dialer
+8. Task 2.2: DialerViewModel
+9. Task 2.3: DialerFragment
+10. Task 3.1: ContactsRepository
+11. Task 3.2: UI de Favoritos
+12. Task 3.3: ContactsViewModel
+
+**Objetivo:** Usuario puede hacer llamadas sin salir de la app
+
+---
+
+### Sprint 3 (Historial y Notificaciones) - ~13 horas
+13. Task 4.1: CallHistoryRepository
+14. Task 4.2: UI de Historial
+15. Task 4.3: HistoryViewModel
+16. Task 6.1: NotificationHelper
+17. Task 6.2: Integración de notificaciones
+
+**Objetivo:** Usuario ve todo su historial y recibe alertas
+
+---
+
+### Sprint 4 (UI/UX y Configuración) - ~12 horas
+18. Task 7.1: Rediseñar MainActivity
+19. Task 7.2: Temas Material 3
+20. Task 8.1: SettingsFragment
+21. Task 8.2: UserPreferences actualizado
+
+**Objetivo:** App profesional y personalizable
+
+---
+
+### Sprint 5 (Pulido Final) - ~13 horas
+22. Task 1.3: SetupActivity
+23. Task 7.3: Animaciones
+24. Task 9.1: Unit tests
+25. Task 9.2: Pruebas de integración
+26. Task 9.3: Optimización
+
+**Objetivo:** App lista para producción
+
+---
+
+## 🚀 SIGUIENTE PASO
+
+**EMPEZAR POR:** Task 1.1 - Implementar CallScreeningService
+
+**¿Listo para comenzar, jefe?** 💪

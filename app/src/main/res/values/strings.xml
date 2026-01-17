@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">SpamStopper</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_title">Bienvenido a SpamStopper</string>
+    <string name="onboarding_welcome_subtitle">Bloqueamos spam automáticamente mientras tú vives tranquilo</string>
+    <string name="onboarding_privacy_title">100% Privado</string>
+    <string name="onboarding_privacy_bullet1">No guardamos audio</string>
+    <string name="onboarding_privacy_bullet2">No guardamos transcripciones</string>
+    <string name="onboarding_privacy_bullet3">Todo procesado localmente</string>
+    <string name="onboarding_privacy_bullet4">Sin servidores externos</string>
+
+    <!-- Home -->
+    <string name="home_title">SpamStopper</string>
+    <string name="home_stats_blocked">Bloqueadas</string>
+    <string name="home_stats_legitimate">Legítimas</string>
+    <string name="home_stats_accuracy">Precisión</string>
+    <string name="home_protection_active">Protección activa</string>
+    <string name="home_recent_blocks">Bloqueados recientes</string>
+
+    <!-- Categories -->
+    <string name="category_sales">Ventas</string>
+    <string name="category_insurance">Seguros</string>
+    <string name="category_lottery">Sorteos</string>
+    <string name="category_utilities">Suministros</string>
+    <string name="category_other">Otros</string>
+
+    <!-- Notifications -->
+    <string name="notification_spam_blocked">Spam bloqueado</string>
+    <string name="notification_legitimate_missed">Llamada filtrada perdida</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Configuración</string>
+    <string name="settings_general">General</string>
+    <string name="settings_personalization">Personalización</string>
+    <string name="settings_advanced">Avanzado</string>
+    <string name="settings_privacy">Privacidad</string>
+    <string name="settings_about">Sobre la app</string>
+
+    <!-- Buttons -->
+    <string name="button_next">Siguiente</string>
+    <string name="button_start">Comenzar</string>
+    <string name="button_accept">Aceptar</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_save">Guardar</string>
+
+    <!-- Common -->
+    <string name="loading">Cargando…</string>
+    <string name="error_generic">Ha ocurrido un error</string>
+</resources>

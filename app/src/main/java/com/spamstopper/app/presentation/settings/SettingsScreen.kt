@@ -1,6 +1,7 @@
 package com.spamstopper.app.presentation.settings
 
 import android.content.Intent
+import android.media.RingtoneManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -17,10 +18,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.spamstopper.app.utils.PermissionsHelper
 
+/**
+ * ============================================================================
+ * SettingsScreen.kt - Pantalla de configuración de SpamStopper
+ * ============================================================================
+ *
+ * PROPÓSITO:
+ * Permite al usuario configurar SpamStopper:
+ * - Modo Secretaria (auto-contestar)
+ * - Tono de notificación para llamadas legítimas
+ * - Palabras clave de emergencia
+ * - Nombres de familia
+ * - Permisos del sistema
+ *
+ * ACTUALIZADO: Enero 2026 - Añadido selector de tono de notificación
+ * ============================================================================
+ */
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel()
@@ -28,38 +48,33 @@ fun SettingsScreen(
     val state by viewModel.state.collectAsState()
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-
-    // Snackbar
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Launcher para solicitar permisos
+    // Launcher para permisos
     val permissionsLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
-        android.util.Log.d("SettingsScreen", "📋 Permisos recibidos: $permissions")
-
-        // Verificar permisos después de solicitar
         viewModel.checkPermissions()
-
-        // Si todos fueron concedidos, solicitar marcador por defecto
-        if (permissions.values.all { it }) {
-            if (!PermissionsHelper.isDefaultDialer(context)) {
-                android.util.Log.d("SettingsScreen", "📞 Solicitando marcador por defecto...")
-                PermissionsHelper.requestDefaultDialer(context)
-            }
+        if (permissions.values.all { it } && !PermissionsHelper.isDefaultDialer(context)) {
+            PermissionsHelper.requestDefaultDialer(context)
         }
     }
 
-    // Solicitar permisos cuando sea necesario
+    // Launcher para selector de tono
+    val ringtoneLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val uri = result.data?.getParcelableExtra<Uri>(RingtoneManager.EXTRA_RINGTONE_PICKED_URI)
+        viewModel.setNotificationRingtone(uri)
+    }
+
     LaunchedEffect(state.needsPermissionRequest) {
         if (state.needsPermissionRequest) {
-            android.util.Log.d("SettingsScreen", "🔐 Solicitando permisos...")
             permissionsLauncher.launch(PermissionsHelper.SECRETARY_PERMISSIONS)
             viewModel.clearPermissionRequest()
         }
     }
 
-    // Mostrar mensaje si existe
     LaunchedEffect(state.snackbarMessage) {
         state.snackbarMessage?.let { message ->
             snackbarHostState.showSnackbar(message)
@@ -67,17 +82,12 @@ fun SettingsScreen(
         }
     }
 
-    // Recargar permisos cuando se vuelve a la pantalla
     DisposableEffect(Unit) {
         viewModel.checkPermissions()
-        onDispose {
-            viewModel.checkPermissions()
-        }
+        onDispose { }
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
-    ) { paddingValues ->
+    Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -86,381 +96,434 @@ fun SettingsScreen(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Título
-            Text(
-                text = "Configuración",
-                style = MaterialTheme.typography.headlineMedium,
-                modifier = Modifier.padding(bottom = 8.dp)
+            // PERMISOS
+            PermissionsCard(
+                hasPermissions = state.hasSecretaryPermissions,
+                missingPermissions = state.missingPermissions,
+                onRequestPermissions = { viewModel.requestPermissions() }
             )
 
-            // INDICADOR DE PERMISOS
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(enabled = !state.hasSecretaryPermissions) {
-                        viewModel.requestPermissions()
-                    },
-                colors = CardDefaults.cardColors(
-                    containerColor = if (state.hasSecretaryPermissions) {
-                        Color(0xFF4CAF50).copy(alpha = 0.1f)
-                    } else {
-                        Color(0xFFF44336).copy(alpha = 0.1f)
-                    }
-                )
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = if (state.hasSecretaryPermissions) {
-                                "✅ Sistema listo"
-                            } else {
-                                "⚠️ Permisos necesarios"
-                            },
-                            style = MaterialTheme.typography.titleMedium,
-                            color = if (state.hasSecretaryPermissions) {
-                                Color(0xFF4CAF50)
-                            } else {
-                                Color(0xFFF44336)
-                            }
-                        )
-
-                        if (!state.hasSecretaryPermissions) {
-                            Button(
-                                onClick = { viewModel.requestPermissions() },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary
-                                )
-                            ) {
-                                Text("Solicitar")
-                            }
-                        }
-                    }
-
-                    if (!state.hasSecretaryPermissions) {
-                        Divider(modifier = Modifier.padding(vertical = 8.dp))
-
-                        Text(
-                            text = "📋 Permisos faltantes:",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        state.missingPermissions.forEach { permission ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 4.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Close,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp),
-                                    tint = Color(0xFFF44336)
-                                )
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Column {
-                                    Text(
-                                        text = PermissionsHelper.getPermissionName(permission),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
-                                    )
-                                    Text(
-                                        text = getPermissionDescription(permission),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
-                                    )
-                                }
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(
-                            text = "💡 Toca aquí o pulsa 'Solicitar' para otorgar permisos",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
-                    } else {
-                        Text(
-                            text = "✅ Todos los permisos concedidos. Sistema listo para detectar spam.",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF4CAF50)
-                        )
-                    }
-                }
-            }
-
             // MODO SECRETARIA
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "🎙️ Modo Secretaria",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                text = "Contestar y analizar llamadas automáticamente",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                            )
-                        }
+            SecretaryModeCard(
+                enabled = state.autoAnswerEnabled,
+                hasPermissions = state.hasSecretaryPermissions,
+                onToggle = { viewModel.setAutoAnswer(it) },
+                onRequestPermissions = { viewModel.requestPermissions() }
+            )
 
-                        Switch(
-                            checked = state.autoAnswerEnabled,
-                            enabled = state.hasSecretaryPermissions,
-                            onCheckedChange = { viewModel.setAutoAnswer(it) }
+            // TONO DE NOTIFICACIÓN
+            RingtoneCard(
+                currentRingtoneName = state.notificationRingtoneName,
+                onSelectRingtone = {
+                    val intent = Intent(RingtoneManager.ACTION_RINGTONE_PICKER).apply {
+                        putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_RINGTONE)
+                        putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Tono para llamadas legítimas")
+                        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false)
+                        putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true)
+                        state.notificationRingtoneUri?.let { uri ->
+                            putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, uri)
+                        }
+                    }
+                    ringtoneLauncher.launch(intent)
+                },
+                onTestRingtone = { viewModel.testNotificationRingtone() }
+            )
+
+            // PERMITIR CONTACTOS
+            AllowContactsCard(
+                enabled = state.allowContactsEnabled,
+                onToggle = { viewModel.setAllowContacts(it) }
+            )
+
+            // PALABRAS CLAVE
+            EmergencyKeywordsCard(
+                keywords = state.customKeywords,
+                onSave = { viewModel.setCustomKeywords(it) }
+            )
+
+            // NOMBRES DE FAMILIA
+            FamilyNamesCard(
+                names = state.familyNames,
+                onSave = { viewModel.setFamilyNames(it) }
+            )
+
+            // NOMBRE DEL USUARIO
+            UserNameCard(
+                userName = state.userName,
+                onSave = { viewModel.setUserName(it) }
+            )
+
+            // AVANZADO
+            AdvancedSettingsCard(
+                onOpenSystemSettings = {
+                    context.startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                        data = Uri.fromParts("package", context.packageName, null)
+                    })
+                },
+                onClearHistory = { viewModel.clearCallHistory() }
+            )
+
+            // INFO
+            AppInfoCard()
+
+            Spacer(modifier = Modifier.height(32.dp))
+        }
+    }
+}
+
+@Composable
+private fun PermissionsCard(
+    hasPermissions: Boolean,
+    missingPermissions: List<String>,
+    onRequestPermissions: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth().clickable(enabled = !hasPermissions) { onRequestPermissions() },
+        colors = CardDefaults.cardColors(
+            containerColor = if (hasPermissions) Color(0xFF10B981).copy(alpha = 0.1f)
+            else Color(0xFFEF4444).copy(alpha = 0.1f)
+        )
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = if (hasPermissions) "✅" else "⚠️", style = MaterialTheme.typography.titleLarge)
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text(
+                            text = if (hasPermissions) "Sistema listo" else "Permisos necesarios",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = if (hasPermissions) Color(0xFF10B981) else Color(0xFFEF4444)
+                        )
+                        Text(
+                            text = if (hasPermissions) "Todos los permisos concedidos"
+                            else "${missingPermissions.size} permisos faltantes",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                         )
                     }
-
-                    if (!state.hasSecretaryPermissions) {
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable { viewModel.requestPermissions() },
-                            color = Color(0xFFFFF3E0),
-                            shape = MaterialTheme.shapes.small
-                        ) {
-                            Row(
-                                modifier = Modifier.padding(12.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Warning,
-                                    contentDescription = null,
-                                    tint = Color(0xFFFF9800),
-                                    modifier = Modifier.size(20.dp)
-                                )
-                                Spacer(modifier = Modifier.width(8.dp))
-                                Text(
-                                    text = "Se requieren permisos adicionales. Toca para ver detalles.",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = Color(0xFFE65100)
-                                )
-                            }
-                        }
-                    }
+                }
+                if (!hasPermissions) {
+                    Button(onClick = onRequestPermissions) { Text("Solicitar") }
                 }
             }
-
-            // PERMITIR CONTACTOS REGISTRADOS
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "📞 Permitir contactos registrados",
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                            Text(
-                                text = "Los contactos guardados tienen paso libre sin análisis",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                            )
-                        }
-
-                        Switch(
-                            checked = state.allowContactsEnabled,
-                            onCheckedChange = { viewModel.setAllowContacts(it) }
-                        )
-                    }
-                }
-            }
-
-            // KEYWORDS PERSONALIZADAS
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "🔑 Palabras clave de emergencia",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Text(
-                        text = "Añade palabras que harán sonar el teléfono (separadas por comas)",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
-
-                    var keywordsText by remember { mutableStateOf(state.customKeywords) }
-
-                    LaunchedEffect(state.customKeywords) {
-                        keywordsText = state.customKeywords
-                    }
-
-                    OutlinedTextField(
-                        value = keywordsText,
-                        onValueChange = { keywordsText = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text("ej: trabajo, oficina, banco") },
-                        maxLines = 3
-                    )
-
-                    Button(
-                        onClick = { viewModel.setCustomKeywords(keywordsText) },
-                        modifier = Modifier.align(Alignment.End)
-                    ) {
-                        Icon(Icons.Default.Save, contentDescription = null)
+            if (!hasPermissions && missingPermissions.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Divider()
+                Spacer(modifier = Modifier.height(12.dp))
+                missingPermissions.forEach { permission ->
+                    Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Close, null, Modifier.size(16.dp), tint = Color(0xFFEF4444))
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Guardar")
+                        Text(getPermissionDisplayName(permission), style = MaterialTheme.typography.bodySmall)
                     }
-                }
-            }
-
-            // LIMPIAR HISTORIAL
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "🗑️ Limpiar historial",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Text(
-                        text = "Eliminar todas las llamadas registradas del sistema",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
-
-                    var showDialog by remember { mutableStateOf(false) }
-
-                    Button(
-                        onClick = { showDialog = true },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error
-                        )
-                    ) {
-                        Icon(Icons.Default.Delete, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Eliminar historial")
-                    }
-
-                    if (showDialog) {
-                        AlertDialog(
-                            onDismissRequest = { showDialog = false },
-                            title = { Text("¿Eliminar historial?") },
-                            text = { Text("Esta acción no se puede deshacer. Se eliminarán todas las llamadas registradas.") },
-                            confirmButton = {
-                                TextButton(
-                                    onClick = {
-                                        viewModel.clearCallHistory()
-                                        showDialog = false
-                                    }
-                                ) {
-                                    Text("Eliminar")
-                                }
-                            },
-                            dismissButton = {
-                                TextButton(onClick = { showDialog = false }) {
-                                    Text("Cancelar")
-                                }
-                            }
-                        )
-                    }
-                }
-            }
-
-            // CONFIGURACIÓN AVANZADA
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = "⚙️ Configuración avanzada",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    TextButton(
-                        onClick = {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-                                data = Uri.fromParts("package", context.packageName, null)
-                            }
-                            context.startActivity(intent)
-                        }
-                    ) {
-                        Icon(Icons.Default.Settings, contentDescription = null)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Abrir configuración del sistema")
-                    }
-                }
-            }
-
-            // INFO DE LA APP
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    Text(
-                        text = "ℹ️ Información",
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Text(
-                        text = "SpamStopper v2.0",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-
-                    Text(
-                        text = "Sistema avanzado de detección de spam",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                    )
                 }
             }
         }
     }
 }
 
-/**
- * Obtiene descripción detallada de cada permiso
- */
-private fun getPermissionDescription(permission: String): String {
-    return when (permission) {
-        android.Manifest.permission.READ_PHONE_STATE -> "Necesario para detectar llamadas entrantes"
-        android.Manifest.permission.ANSWER_PHONE_CALLS -> "Permite contestar llamadas automáticamente"
-        android.Manifest.permission.READ_CALL_LOG -> "Lee el historial para analizar patrones"
-        android.Manifest.permission.RECORD_AUDIO -> "Captura audio para detectar spam"
-        "DEFAULT_DIALER" -> "Debe ser la app de llamadas predeterminada"
-        else -> "Requerido para el funcionamiento"
+@Composable
+private fun SecretaryModeCard(
+    enabled: Boolean,
+    hasPermissions: Boolean,
+    onToggle: (Boolean) -> Unit,
+    onRequestPermissions: () -> Unit
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                    Text(text = "🎙️", style = MaterialTheme.typography.titleLarge)
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column {
+                        Text("Modo Secretaria", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text("Contesta y analiza llamadas automáticamente",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                    }
+                }
+                Switch(checked = enabled, enabled = hasPermissions, onCheckedChange = onToggle)
+            }
+            if (!hasPermissions) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Surface(
+                    modifier = Modifier.fillMaxWidth().clickable { onRequestPermissions() },
+                    color = Color(0xFFFFF3E0),
+                    shape = MaterialTheme.shapes.small
+                ) {
+                    Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Default.Warning, null, Modifier.size(20.dp), tint = Color(0xFFFF9800))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Se requieren permisos. Toca para configurar.",
+                            style = MaterialTheme.typography.bodySmall, color = Color(0xFFE65100))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RingtoneCard(
+    currentRingtoneName: String,
+    onSelectRingtone: () -> Unit,
+    onTestRingtone: () -> Unit
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "🔔", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("Tono de notificación", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Sonará cuando detecte una llamada legítima",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Surface(
+                modifier = Modifier.fillMaxWidth().clickable { onSelectRingtone() },
+                color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text("Tono seleccionado", style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                        Text(currentRingtoneName.ifEmpty { "Tono predeterminado" },
+                            style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium)
+                    }
+                    Icon(Icons.Default.ChevronRight, "Cambiar", tint = MaterialTheme.colorScheme.primary)
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = onTestRingtone, modifier = Modifier.weight(1f)) {
+                    Icon(Icons.Default.PlayArrow, null)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Probar")
+                }
+                Button(onClick = onSelectRingtone, modifier = Modifier.weight(1f)) {
+                    Icon(Icons.Default.MusicNote, null)
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Cambiar")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun AllowContactsCard(enabled: Boolean, onToggle: (Boolean) -> Unit) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
+                Text(text = "📇", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Permitir contactos", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Los contactos guardados pasan sin análisis",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                }
+            }
+            Switch(checked = enabled, onCheckedChange = onToggle)
+        }
+    }
+}
+
+@Composable
+private fun EmergencyKeywordsCard(keywords: String, onSave: (String) -> Unit) {
+    var text by remember { mutableStateOf(keywords) }
+    LaunchedEffect(keywords) { text = keywords }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "🚨", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Palabras de emergencia", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Estas palabras harán sonar tu teléfono siempre",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedTextField(
+                value = text, onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("urgente, emergencia, hospital") },
+                label = { Text("Separadas por comas") }, maxLines = 3
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = { onSave(text) }, modifier = Modifier.align(Alignment.End)) {
+                Icon(Icons.Default.Save, null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Guardar")
+            }
+        }
+    }
+}
+
+@Composable
+private fun FamilyNamesCard(names: String, onSave: (String) -> Unit) {
+    var text by remember { mutableStateOf(names) }
+    LaunchedEffect(names) { text = names }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "👨‍👩‍👧", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Nombres de familia", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Si mencionan estos nombres, te alertamos",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedTextField(
+                value = text, onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("mamá, papá, hijo, María") },
+                label = { Text("Separados por comas") }, maxLines = 3
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = { onSave(text) }, modifier = Modifier.align(Alignment.End)) {
+                Icon(Icons.Default.Save, null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Guardar")
+            }
+        }
+    }
+}
+
+@Composable
+private fun UserNameCard(userName: String, onSave: (String) -> Unit) {
+    var text by remember { mutableStateOf(userName) }
+    LaunchedEffect(userName) { text = userName }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "👤", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Column {
+                    Text("Tu nombre", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Si lo mencionan, la llamada es para ti",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+                }
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            OutlinedTextField(
+                value = text, onValueChange = { text = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Tu nombre") },
+                label = { Text("Nombre") }, singleLine = true
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = { onSave(text) }, modifier = Modifier.align(Alignment.End)) {
+                Icon(Icons.Default.Save, null)
+                Spacer(modifier = Modifier.width(4.dp))
+                Text("Guardar")
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdvancedSettingsCard(onOpenSystemSettings: () -> Unit, onClearHistory: () -> Unit) {
+    var showClearDialog by remember { mutableStateOf(false) }
+
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = "⚙️", style = MaterialTheme.typography.titleLarge)
+                Spacer(modifier = Modifier.width(12.dp))
+                Text("Configuración avanzada", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextButton(onClick = onOpenSystemSettings, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Default.Settings, null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Abrir configuración del sistema")
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(Icons.Default.ChevronRight, null)
+            }
+            TextButton(
+                onClick = { showClearDialog = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.textButtonColors(contentColor = Color(0xFFEF4444))
+            ) {
+                Icon(Icons.Default.Delete, null)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Limpiar historial de llamadas")
+                Spacer(modifier = Modifier.weight(1f))
+                Icon(Icons.Default.ChevronRight, null)
+            }
+        }
+    }
+
+    if (showClearDialog) {
+        AlertDialog(
+            onDismissRequest = { showClearDialog = false },
+            icon = { Icon(Icons.Default.Warning, null) },
+            title = { Text("¿Eliminar historial?") },
+            text = { Text("Se eliminarán todas las llamadas registradas. Esta acción no se puede deshacer.") },
+            confirmButton = {
+                Button(
+                    onClick = { onClearHistory(); showClearDialog = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEF4444))
+                ) { Text("Eliminar") }
+            },
+            dismissButton = { OutlinedButton(onClick = { showClearDialog = false }) { Text("Cancelar") } }
+        )
+    }
+}
+
+@Composable
+private fun AppInfoCard() {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "🛡️", style = MaterialTheme.typography.displaySmall)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("SpamStopper 2.0", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            Text("Tu secretaria personal contra el spam",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f))
+        }
+    }
+}
+
+private fun getPermissionDisplayName(permission: String): String {
+    return when {
+        permission.contains("PHONE") -> "Teléfono"
+        permission.contains("CALL_LOG") -> "Registro de llamadas"
+        permission.contains("CONTACTS") -> "Contactos"
+        permission.contains("RECORD_AUDIO") -> "Micrófono"
+        permission.contains("NOTIFICATION") -> "Notificaciones"
+        else -> permission.substringAfterLast(".")
     }
 }

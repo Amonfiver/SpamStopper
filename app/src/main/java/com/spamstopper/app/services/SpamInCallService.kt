@@ -9,6 +9,7 @@ import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -20,6 +21,9 @@ import android.telecom.InCallService
 import android.telecom.VideoProfile
 import androidx.core.app.NotificationCompat
 import com.spamstopper.app.R
+import com.spamstopper.app.data.database.BlockedCallDao
+import com.spamstopper.app.data.database.entities.BlockedCall
+import com.spamstopper.app.data.model.CallCategory
 import com.spamstopper.app.data.repository.ContactsRepository
 import com.spamstopper.app.presentation.incall.InCallActivity
 import com.spamstopper.app.services.ai.SecretaryModeManager
@@ -28,17 +32,28 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
+/**
+ * ============================================================================
+ * SpamInCallService.kt - Servicio principal de gestión de llamadas
+ * ============================================================================
+ *
+ * PROPÓSITO:
+ * Servicio InCallService que intercepta todas las llamadas entrantes y salientes.
+ * Implementa el Modo Secretaria para analizar y filtrar llamadas de spam.
+ *
+ * ACTUALIZADO: Enero 2026 - Tono personalizado y guardado en BD
+ * ============================================================================
+ */
+
 @AndroidEntryPoint
 class SpamInCallService : InCallService() {
 
     @Inject lateinit var secretaryModeManager: SecretaryModeManager
     @Inject lateinit var contactsRepository: ContactsRepository
+    @Inject lateinit var blockedCallDao: BlockedCallDao
 
     companion object {
         private const val TAG = "SpamInCallService"
-        private const val CHANNEL_ID = "incoming_call_channel"
-        private const val CHANNEL_SECRETARY = "secretary_mode_channel"
-        private const val NOTIFICATION_ID = 2001
 
         @Volatile var instance: SpamInCallService? = null
             private set
@@ -64,7 +79,7 @@ class SpamInCallService : InCallService() {
             super.onStateChanged(call, state)
             android.util.Log.d(TAG, "📞 Estado: ${getStateName(state)}")
             when (state) {
-                Call.STATE_DIALING, Call.STATE_CONNECTING -> { stopRinging() }
+                Call.STATE_DIALING, Call.STATE_CONNECTING -> stopRinging()
                 Call.STATE_ACTIVE -> onCallActive()
                 Call.STATE_DISCONNECTED -> onCallDisconnected()
             }
@@ -98,25 +113,23 @@ class SpamInCallService : InCallService() {
         lastAnalysisResult = null
         call.registerCallback(callCallback)
 
-        // LLAMADAS SALIENTES: Solo mostrar UI
         if (!isIncoming) {
             launchInCallUI(phoneNumber, false, null)
             return
         }
 
-        // LLAMADAS ENTRANTES: Procesar con Secretary Mode
         serviceScope.launch { handleIncomingCall(call, phoneNumber) }
     }
 
     private suspend fun handleIncomingCall(call: Call, phoneNumber: String) {
         // 1. VERIFICAR SI ES CONTACTO GUARDADO
-        val isContact = withContext(Dispatchers.IO) {
-            contactsRepository.isContact(phoneNumber)
+        val contactName = withContext(Dispatchers.IO) {
+            contactsRepository.getContactNameByNumber(phoneNumber)
         }
+        val isContact = contactName != null
 
-        if (isContact) {
-            android.util.Log.d(TAG, "✅ CONTACTO GUARDADO - Pasar llamada directamente")
-            android.util.Log.d(TAG, "   No se activa Secretary Mode")
+        if (isContact && isAllowContactsEnabled()) {
+            android.util.Log.d(TAG, "✅ CONTACTO GUARDADO: $contactName")
             startRinging()
             launchInCallUI(phoneNumber, true, null)
             return
@@ -126,12 +139,10 @@ class SpamInCallService : InCallService() {
         val secretaryModeEnabled = isSecretaryModeEnabled()
 
         android.util.Log.d(TAG, "═══════════════════════════════════════")
-        android.util.Log.d(TAG, "⚙️ VERIFICANDO CONFIGURACIÓN")
-        android.util.Log.d(TAG, "   Secretary Mode: ${if (secretaryModeEnabled) "ACTIVADO ✅" else "DESACTIVADO ❌"}")
+        android.util.Log.d(TAG, "⚙️ Secretary Mode: ${if (secretaryModeEnabled) "ACTIVADO ✅" else "DESACTIVADO ❌"}")
         android.util.Log.d(TAG, "═══════════════════════════════════════")
 
         if (!secretaryModeEnabled) {
-            android.util.Log.d(TAG, "📞 Modo normal - Sonar y esperar usuario")
             startRinging()
             launchInCallUI(phoneNumber, true, null)
             return
@@ -145,51 +156,36 @@ class SpamInCallService : InCallService() {
 
         isInSecretaryMode = true
 
-        // CONTESTAR INMEDIATAMENTE EN SILENCIO
         handler.postDelayed({
             answerCallSilently(call)
-        }, 300) // 300ms = primer tono
+        }, 300L)
 
-        // INICIAR ANÁLISIS
         secretaryModeManager.startAnalysis(phoneNumber) { result ->
-            handleAnalysisResult(call, phoneNumber, result)
+            handleAnalysisResult(call, phoneNumber, contactName, result)
         }
     }
 
-    /**
-     * ⭐ CLAVE: Contestar en SILENCIO para Secretary Mode
-     */
     private fun answerCallSilently(call: Call) {
         try {
-            android.util.Log.d(TAG, "🔇 ═══════════════════════════════════════")
-            android.util.Log.d(TAG, "🔇 CONTESTANDO AUTOMÁTICAMENTE EN SILENCIO")
-            android.util.Log.d(TAG, "🔇 ═══════════════════════════════════════")
+            android.util.Log.d(TAG, "🔇 CONTESTANDO EN SILENCIO")
 
-            // Configurar audio para llamada silenciosa
             audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
             audioManager?.isSpeakerphoneOn = false
-            audioManager?.isMicrophoneMute = false // NO silenciar micrófono (necesitamos capturar audio)
-
-            // Bajar volumen del auricular a 0 para que el usuario no escuche nada
+            audioManager?.isMicrophoneMute = false
             audioManager?.setStreamVolume(AudioManager.STREAM_VOICE_CALL, 0, 0)
 
-            // CONTESTAR LLAMADA
             call.answer(VideoProfile.STATE_AUDIO_ONLY)
 
             android.util.Log.d(TAG, "✅ Llamada contestada en modo silencioso")
-            android.util.Log.d(TAG, "   Audio mode: MODE_IN_COMMUNICATION")
-            android.util.Log.d(TAG, "   Speaker: OFF")
-            android.util.Log.d(TAG, "   Mic mute: OFF (capturando)")
-            android.util.Log.d(TAG, "   Volume: 0 (usuario no escucha)")
-
         } catch (e: Exception) {
-            android.util.Log.e(TAG, "❌ Error contestando automáticamente", e)
+            android.util.Log.e(TAG, "❌ Error contestando: ${e.message}")
         }
     }
 
     private fun handleAnalysisResult(
         call: Call,
         phoneNumber: String,
+        contactName: String?,
         result: SecretaryModeManager.AnalysisResult
     ) {
         lastAnalysisResult = result
@@ -200,30 +196,177 @@ class SpamInCallService : InCallService() {
         android.util.Log.d(TAG, "   Decisión: ${result.decision}")
         android.util.Log.d(TAG, "   Categoría: ${result.category?.displayName ?: result.legitimacyReason?.displayName}")
         android.util.Log.d(TAG, "   Confianza: ${(result.confidence * 100).toInt()}%")
-        android.util.Log.d(TAG, "   Keywords: ${result.detectedKeywords.joinToString()}")
         android.util.Log.d(TAG, "═══════════════════════════════════════")
+
+        // Guardar en base de datos
+        serviceScope.launch(Dispatchers.IO) {
+            saveCallToDatabase(phoneNumber, contactName, result)
+        }
 
         if (result.shouldHangUp()) {
             // SPAM/ROBOT DETECTADO
-            android.util.Log.d(TAG, "🚫 SPAM/ROBOT - Colgando y bloqueando")
+            android.util.Log.d(TAG, "🚫 SPAM/ROBOT - Colgando")
             hangUp()
             showBlockedCallNotification(phoneNumber, result)
-            // TODO: Guardar en lista negra
         } else {
             // LLAMADA LEGÍTIMA
-            android.util.Log.d(TAG, "✅ LLAMADA LEGÍTIMA - Alertando al usuario")
+            android.util.Log.d(TAG, "✅ LLAMADA LEGÍTIMA - Alertando")
 
             // Restaurar volumen
             val maxVolume = audioManager?.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL) ?: 7
             audioManager?.setStreamVolume(AudioManager.STREAM_VOICE_CALL, maxVolume, 0)
 
-            // Sonar para alertar al usuario
+            // Sonar con tono personalizado
             startRinging()
 
-            // Mostrar UI
             launchInCallUI(phoneNumber, true, result)
             showLegitimateCallNotification(phoneNumber, result)
         }
+    }
+
+    /**
+     * Guarda la llamada en la base de datos
+     */
+    private suspend fun saveCallToDatabase(
+        phoneNumber: String,
+        contactName: String?,
+        result: SecretaryModeManager.AnalysisResult
+    ) {
+        try {
+            val category = when {
+                result.decision == SecretaryModeManager.CallClassification.ROBOT ->
+                    CallCategory.SPAM_ROBOT
+                result.decision == SecretaryModeManager.CallClassification.SPAM ->
+                    result.category?.let { mapSpamCategory(it) } ?: CallCategory.SPAM_GENERIC
+                result.decision == SecretaryModeManager.CallClassification.EMERGENCY ->
+                    CallCategory.LEGITIMATE_EMERGENCY
+                result.decision == SecretaryModeManager.CallClassification.LEGITIMATE ->
+                    result.legitimacyReason?.let { mapLegitimacyReason(it) } ?: CallCategory.LEGITIMATE_HUMAN
+                else -> CallCategory.UNCERTAIN
+            }
+
+            val blockedCall = BlockedCall(
+                phoneNumber = phoneNumber,
+                contactName = contactName,
+                category = category,
+                timestamp = System.currentTimeMillis(),
+                analysisSeconds = (result.analysisTimeMs / 1000).toInt(),
+                confidence = result.confidence,
+                wasBlocked = result.shouldHangUp(),
+                wasAlerted = result.shouldAlertUser(),
+                detectedKeywords = result.detectedKeywords.take(10).joinToString(","),
+                partialTranscript = result.transcript.take(200)
+            )
+
+            blockedCallDao.insert(blockedCall)
+
+            android.util.Log.d(TAG, "💾 Llamada guardada en BD:")
+            android.util.Log.d(TAG, "   Categoría: ${category.displayName}")
+            android.util.Log.d(TAG, "   Bloqueada: ${blockedCall.wasBlocked}")
+
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "❌ Error guardando en BD: ${e.message}")
+        }
+    }
+
+    private fun mapSpamCategory(category: SecretaryModeManager.SpamCategory): CallCategory {
+        return when (category) {
+            SecretaryModeManager.SpamCategory.ROBOT -> CallCategory.SPAM_ROBOT
+            SecretaryModeManager.SpamCategory.TELEMARKETING -> CallCategory.SPAM_TELEMARKETING
+            SecretaryModeManager.SpamCategory.SURVEYS -> CallCategory.SPAM_SURVEYS
+            SecretaryModeManager.SpamCategory.SCAM -> CallCategory.SPAM_SCAM
+            SecretaryModeManager.SpamCategory.RELIGIOUS -> CallCategory.SPAM_RELIGIOUS
+            SecretaryModeManager.SpamCategory.POLITICAL -> CallCategory.SPAM_POLITICAL
+            SecretaryModeManager.SpamCategory.FINANCIAL -> CallCategory.SPAM_FINANCIAL
+            SecretaryModeManager.SpamCategory.INSURANCE -> CallCategory.SPAM_INSURANCE
+            SecretaryModeManager.SpamCategory.ENERGY -> CallCategory.SPAM_ENERGY
+            SecretaryModeManager.SpamCategory.TELECOM -> CallCategory.SPAM_TELECOM
+            SecretaryModeManager.SpamCategory.UNKNOWN_SPAM -> CallCategory.SPAM_GENERIC
+        }
+    }
+
+    private fun mapLegitimacyReason(reason: SecretaryModeManager.LegitimacyReason): CallCategory {
+        return when (reason) {
+            SecretaryModeManager.LegitimacyReason.SAID_USER_NAME -> CallCategory.LEGITIMATE_MENTIONS_USER
+            SecretaryModeManager.LegitimacyReason.SAID_FAMILY_NAME -> CallCategory.LEGITIMATE_FAMILY
+            SecretaryModeManager.LegitimacyReason.WORK_RELATED -> CallCategory.LEGITIMATE_WORK
+            SecretaryModeManager.LegitimacyReason.EMERGENCY_KEYWORDS -> CallCategory.LEGITIMATE_EMERGENCY
+            SecretaryModeManager.LegitimacyReason.OFFICIAL_ENTITY -> CallCategory.LEGITIMATE_OFFICIAL
+            SecretaryModeManager.LegitimacyReason.MEDICAL -> CallCategory.LEGITIMATE_MEDICAL
+            SecretaryModeManager.LegitimacyReason.SCHOOL -> CallCategory.LEGITIMATE_SCHOOL
+            SecretaryModeManager.LegitimacyReason.DELIVERY -> CallCategory.LEGITIMATE_DELIVERY
+            SecretaryModeManager.LegitimacyReason.HUMAN_CONVERSATION -> CallCategory.LEGITIMATE_HUMAN
+        }
+    }
+
+    /**
+     * Inicia el tono de llamada con tono personalizado
+     */
+    private fun startRinging() {
+        if (isRinging) return
+        isRinging = true
+
+        try {
+            val customRingtoneUri = getCustomRingtoneUri()
+            val ringtoneUri = customRingtoneUri
+                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+
+            android.util.Log.d(TAG, "🔔 Usando tono: $ringtoneUri")
+
+            ringtone = RingtoneManager.getRingtone(this, ringtoneUri)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                ringtone?.isLooping = true
+            }
+            ringtone?.play()
+
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Error con tono, usando default: ${e.message}")
+            try {
+                ringtone = RingtoneManager.getRingtone(
+                    this,
+                    RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+                )
+                ringtone?.play()
+            } catch (e2: Exception) {
+                android.util.Log.e(TAG, "Error iniciando ringtone: ${e2.message}")
+            }
+        }
+
+        // Vibración
+        try {
+            if (isVibrationEnabled()) {
+                val pattern = longArrayOf(0, 1000, 1000)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator?.vibrate(
+                        VibrationEffect.createWaveform(pattern, 0),
+                        AudioAttributes.Builder()
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                            .build()
+                    )
+                } else {
+                    @Suppress("DEPRECATION")
+                    vibrator?.vibrate(pattern, 0)
+                }
+            }
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Error vibración: ${e.message}")
+        }
+    }
+
+    private fun getCustomRingtoneUri(): Uri? {
+        val prefs = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+        val uriString = prefs.getString("notification_ringtone_uri", null)
+        return uriString?.let {
+            try { Uri.parse(it) } catch (e: Exception) { null }
+        }
+    }
+
+    private fun stopRinging() {
+        if (!isRinging) return
+        isRinging = false
+
+        try { ringtone?.stop(); ringtone = null } catch (e: Exception) {}
+        try { vibrator?.cancel() } catch (e: Exception) {}
     }
 
     private fun onCallActive() {
@@ -232,12 +375,9 @@ class SpamInCallService : InCallService() {
         if (!isInSecretaryMode) {
             stopRinging()
             audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
-
-            // Restaurar volumen normal si no estamos en secretary mode
             val maxVolume = audioManager?.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL) ?: 7
             audioManager?.setStreamVolume(AudioManager.STREAM_VOICE_CALL, maxVolume, 0)
         }
-        // Si estamos en secretary mode, mantener volumen en 0
     }
 
     private fun onCallDisconnected() {
@@ -276,62 +416,12 @@ class SpamInCallService : InCallService() {
                     putExtra("analysis_category", it.category?.name)
                     putExtra("analysis_reason", it.legitimacyReason?.name)
                     putExtra("analysis_confidence", it.confidence)
-                    putExtra("analysis_keywords", it.detectedKeywords.toTypedArray())
                 }
             }
             startActivity(intent)
         } catch (e: Exception) {
-            android.util.Log.e(TAG, "❌ Error lanzando UI", e)
+            android.util.Log.e(TAG, "❌ Error lanzando UI: ${e.message}")
         }
-    }
-
-    private fun startRinging() {
-        if (isRinging) return
-        isRinging = true
-
-        try {
-            ringtone = RingtoneManager.getRingtone(
-                this,
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                ringtone?.isLooping = true
-            }
-            ringtone?.play()
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Error iniciando ringtone", e)
-        }
-
-        try {
-            val pattern = longArrayOf(0, 1000, 1000)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator?.vibrate(
-                    VibrationEffect.createWaveform(pattern, 0),
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
-                        .build()
-                )
-            } else {
-                @Suppress("DEPRECATION")
-                vibrator?.vibrate(pattern, 0)
-            }
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Error iniciando vibración", e)
-        }
-    }
-
-    private fun stopRinging() {
-        if (!isRinging) return
-        isRinging = false
-
-        try {
-            ringtone?.stop()
-            ringtone = null
-        } catch (e: Exception) {}
-
-        try {
-            vibrator?.cancel()
-        } catch (e: Exception) {}
     }
 
     private fun createNotificationChannels() {
@@ -340,18 +430,16 @@ class SpamInCallService : InCallService() {
 
             nm?.createNotificationChannel(
                 NotificationChannel(
-                    CHANNEL_ID,
-                    "Llamadas",
+                    "incoming_call_channel",
+                    "Llamadas entrantes",
                     NotificationManager.IMPORTANCE_HIGH
-                ).apply {
-                    setSound(null, null)
-                }
+                ).apply { setSound(null, null) }
             )
 
             nm?.createNotificationChannel(
                 NotificationChannel(
-                    CHANNEL_SECRETARY,
-                    "Modo Secretaria",
+                    "blocked_call_channel",
+                    "Llamadas bloqueadas",
                     NotificationManager.IMPORTANCE_DEFAULT
                 )
             )
@@ -362,11 +450,15 @@ class SpamInCallService : InCallService() {
         phoneNumber: String,
         result: SecretaryModeManager.AnalysisResult
     ) {
-        val text = result.category?.let { "${it.emoji} ${it.displayName}" } ?: "Spam"
-        val notification = NotificationCompat.Builder(this, CHANNEL_SECRETARY)
+        val category = result.category
+        val emoji = category?.emoji ?: "🚫"
+        val categoryName = category?.displayName ?: "Spam"
+
+        val notification = NotificationCompat.Builder(this, "blocked_call_channel")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("🛡️ Llamada bloqueada")
-            .setContentText("$phoneNumber - $text")
+            .setContentText("$phoneNumber")
+            .setSubText("$emoji $categoryName")
             .setAutoCancel(true)
             .build()
 
@@ -380,9 +472,9 @@ class SpamInCallService : InCallService() {
         phoneNumber: String,
         result: SecretaryModeManager.AnalysisResult
     ) {
-        val text = result.legitimacyReason?.let {
-            "${it.emoji} ${it.displayName}"
-        } ?: "Verificada"
+        val reason = result.legitimacyReason
+        val emoji = reason?.emoji ?: "✅"
+        val reasonName = reason?.displayName ?: "Verificada"
 
         val intent = Intent(this, InCallActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -390,40 +482,38 @@ class SpamInCallService : InCallService() {
         }
 
         val pi = PendingIntent.getActivity(
-            this,
-            0,
-            intent,
+            this, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+        val notification = NotificationCompat.Builder(this, "incoming_call_channel")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("📞 Llamada entrante")
-            .setContentText("$phoneNumber - $text")
+            .setContentTitle("📞 Llamada verificada")
+            .setContentText("$phoneNumber - $emoji $reasonName")
             .setFullScreenIntent(pi, true)
             .setOngoing(true)
             .build()
 
-        getSystemService(NotificationManager::class.java)?.notify(NOTIFICATION_ID, notification)
+        getSystemService(NotificationManager::class.java)?.notify(2001, notification)
     }
 
     private fun cancelNotification() {
-        getSystemService(NotificationManager::class.java)?.cancel(NOTIFICATION_ID)
+        getSystemService(NotificationManager::class.java)?.cancel(2001)
     }
 
-    /**
-     * ⭐ Verifica si Secretary Mode está activado
-     */
     private fun isSecretaryModeEnabled(): Boolean {
-        val prefs = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
-        val enabled = prefs.getBoolean(Constants.PREF_AUTO_ANSWER_ENABLED, false)
+        return getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(Constants.PREF_AUTO_ANSWER_ENABLED, false)
+    }
 
-        android.util.Log.d(TAG, "📋 Leyendo configuración:")
-        android.util.Log.d(TAG, "   SharedPrefs: ${Constants.PREFS_NAME}")
-        android.util.Log.d(TAG, "   Key: ${Constants.PREF_AUTO_ANSWER_ENABLED}")
-        android.util.Log.d(TAG, "   Valor: $enabled")
+    private fun isAllowContactsEnabled(): Boolean {
+        return getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean(Constants.PREF_ALLOW_CONTACTS, true)
+    }
 
-        return enabled
+    private fun isVibrationEnabled(): Boolean {
+        return getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+            .getBoolean("vibration_enabled", true)
     }
 
     private fun restoreAudio() {
@@ -435,29 +525,17 @@ class SpamInCallService : InCallService() {
 
     // Funciones públicas para InCallActivity
     fun answerCall() {
-        try {
-            currentCall?.answer(VideoProfile.STATE_AUDIO_ONLY)
-            stopRinging()
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Error contestando", e)
-        }
+        currentCall?.answer(VideoProfile.STATE_AUDIO_ONLY)
+        stopRinging()
     }
 
     fun rejectCall() {
-        try {
-            currentCall?.reject(false, null)
-            stopRinging()
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Error rechazando", e)
-        }
+        currentCall?.reject(false, null)
+        stopRinging()
     }
 
     fun hangUp() {
-        try {
-            currentCall?.disconnect()
-        } catch (e: Exception) {
-            android.util.Log.e(TAG, "Error colgando", e)
-        }
+        currentCall?.disconnect()
     }
 
     fun setSpeakerOn(on: Boolean) {

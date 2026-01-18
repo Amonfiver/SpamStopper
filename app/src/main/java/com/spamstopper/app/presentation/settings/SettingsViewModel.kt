@@ -1,9 +1,13 @@
 package com.spamstopper.app.presentation.settings
 
 import android.content.Context
+import android.media.RingtoneManager
+import android.net.Uri
 import android.provider.CallLog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.spamstopper.app.data.database.BlockedCallDao
+import com.spamstopper.app.data.preferences.UserPreferences
 import com.spamstopper.app.domain.EmergencyKeywordDetector
 import com.spamstopper.app.utils.Constants
 import com.spamstopper.app.utils.PermissionsHelper
@@ -18,12 +22,29 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
+ * ============================================================================
+ * SettingsViewModel.kt - ViewModel para configuración de SpamStopper
+ * ============================================================================
+ *
+ * PROPÓSITO:
+ * Gestiona el estado y la lógica de negocio para la pantalla de configuración.
+ *
+ * ACTUALIZADO: Enero 2026 - Añadido soporte para tono de notificación,
+ * nombres de familia y nombre de usuario
+ * ============================================================================
+ */
+
+/**
  * Estado de la configuración
  */
 data class SettingsState(
     val autoAnswerEnabled: Boolean = false,
     val allowContactsEnabled: Boolean = true,
     val customKeywords: String = "",
+    val familyNames: String = "",
+    val userName: String = "",
+    val notificationRingtoneUri: Uri? = null,
+    val notificationRingtoneName: String = "Tono predeterminado",
     val snackbarMessage: String? = null,
     val hasAllPermissions: Boolean = false,
     val hasSecretaryPermissions: Boolean = false,
@@ -34,8 +55,16 @@ data class SettingsState(
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val emergencyDetector: EmergencyKeywordDetector
+    private val emergencyDetector: EmergencyKeywordDetector,
+    private val userPreferences: UserPreferences,
+    private val blockedCallDao: BlockedCallDao
 ) : ViewModel() {
+
+    companion object {
+        private const val PREF_NOTIFICATION_RINGTONE = "notification_ringtone_uri"
+        private const val PREF_FAMILY_NAMES = "family_names"
+        private const val PREF_USER_NAME = "user_name"
+    }
 
     private val prefs = context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -54,19 +83,41 @@ class SettingsViewModel @Inject constructor(
         val autoAnswer = prefs.getBoolean(Constants.PREF_AUTO_ANSWER_ENABLED, false)
         val allowContacts = prefs.getBoolean(Constants.PREF_ALLOW_CONTACTS, true)
         val keywords = emergencyDetector.getUserKeywords().joinToString(", ")
+        val familyNames = prefs.getString(PREF_FAMILY_NAMES, "") ?: ""
+        val userName = prefs.getString(PREF_USER_NAME, "") ?: ""
+
+        // Cargar tono de notificación
+        val ringtoneUriString = prefs.getString(PREF_NOTIFICATION_RINGTONE, null)
+        val ringtoneUri = ringtoneUriString?.let { Uri.parse(it) }
+        val ringtoneName = getRingtoneName(ringtoneUri)
 
         _state.value = _state.value.copy(
             autoAnswerEnabled = autoAnswer,
             allowContactsEnabled = allowContacts,
-            customKeywords = keywords
+            customKeywords = keywords,
+            familyNames = familyNames,
+            userName = userName,
+            notificationRingtoneUri = ringtoneUri,
+            notificationRingtoneName = ringtoneName
         )
 
         android.util.Log.d("SettingsViewModel", "═══════════════════════════════════════")
         android.util.Log.d("SettingsViewModel", "⚙️ CONFIGURACIÓN CARGADA")
         android.util.Log.d("SettingsViewModel", "   Auto-answer: $autoAnswer")
         android.util.Log.d("SettingsViewModel", "   Allow contacts: $allowContacts")
-        android.util.Log.d("SettingsViewModel", "   Keywords: $keywords")
+        android.util.Log.d("SettingsViewModel", "   Ringtone: $ringtoneName")
+        android.util.Log.d("SettingsViewModel", "   User name: $userName")
         android.util.Log.d("SettingsViewModel", "═══════════════════════════════════════")
+    }
+
+    private fun getRingtoneName(uri: Uri?): String {
+        if (uri == null) return "Tono predeterminado"
+        return try {
+            val ringtone = RingtoneManager.getRingtone(context, uri)
+            ringtone?.getTitle(context) ?: "Tono personalizado"
+        } catch (e: Exception) {
+            "Tono personalizado"
+        }
     }
 
     /**
@@ -84,9 +135,6 @@ class SettingsViewModel @Inject constructor(
         )
 
         android.util.Log.d("SettingsViewModel", "🔐 Permisos: All=$hasAll, Secretary=$hasSecretary")
-        if (missing.isNotEmpty()) {
-            android.util.Log.d("SettingsViewModel", "   Faltantes: ${missing.joinToString()}")
-        }
     }
 
     /**
@@ -94,32 +142,65 @@ class SettingsViewModel @Inject constructor(
      */
     fun setAutoAnswer(enabled: Boolean) {
         if (enabled && !_state.value.hasSecretaryPermissions) {
-            // Solicitar permisos
             _state.value = _state.value.copy(needsPermissionRequest = true)
             showMessage("⚠️ Se requieren permisos adicionales")
-
-            android.util.Log.w("SettingsViewModel", "⚠️ Intento activar Secretary Mode sin permisos")
             return
         }
 
-        // Guardar en SharedPreferences
         prefs.edit()
             .putBoolean(Constants.PREF_AUTO_ANSWER_ENABLED, enabled)
             .apply()
 
         _state.value = _state.value.copy(autoAnswerEnabled = enabled)
 
-        android.util.Log.d("SettingsViewModel", "═══════════════════════════════════════")
         android.util.Log.d("SettingsViewModel", "🎙️ MODO SECRETARIA: ${if (enabled) "ACTIVADO ✅" else "DESACTIVADO ❌"}")
-        android.util.Log.d("SettingsViewModel", "   SharedPrefs: ${Constants.PREFS_NAME}")
-        android.util.Log.d("SettingsViewModel", "   Key: ${Constants.PREF_AUTO_ANSWER_ENABLED}")
-        android.util.Log.d("SettingsViewModel", "   Valor: $enabled")
-        android.util.Log.d("SettingsViewModel", "═══════════════════════════════════════")
 
         showMessage(
             if (enabled) "✅ Modo Secretaria activado"
             else "⚠️ Modo Secretaria desactivado"
         )
+    }
+
+    /**
+     * Configura el tono de notificación
+     */
+    fun setNotificationRingtone(uri: Uri?) {
+        val uriString = uri?.toString()
+        prefs.edit().putString(PREF_NOTIFICATION_RINGTONE, uriString).apply()
+
+        val name = getRingtoneName(uri)
+        _state.value = _state.value.copy(
+            notificationRingtoneUri = uri,
+            notificationRingtoneName = name
+        )
+
+        android.util.Log.d("SettingsViewModel", "🔔 Tono cambiado: $name")
+        showMessage("✅ Tono de notificación actualizado")
+    }
+
+    /**
+     * Prueba el tono de notificación
+     */
+    fun testNotificationRingtone() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val uri = _state.value.notificationRingtoneUri
+                    ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+
+                val ringtone = RingtoneManager.getRingtone(context, uri)
+                ringtone?.play()
+
+                kotlinx.coroutines.delay(3000)
+                ringtone?.stop()
+
+                android.util.Log.d("SettingsViewModel", "🔔 Tono probado")
+            } catch (e: Exception) {
+                android.util.Log.e("SettingsViewModel", "❌ Error reproduciendo tono: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    showMessage("❌ Error al reproducir el tono")
+                }
+            }
+        }
     }
 
     /**
@@ -131,7 +212,6 @@ class SettingsViewModel @Inject constructor(
             .apply()
 
         _state.value = _state.value.copy(allowContactsEnabled = enabled)
-
         android.util.Log.d("SettingsViewModel", "📲 Permitir contactos: $enabled")
     }
 
@@ -141,17 +221,50 @@ class SettingsViewModel @Inject constructor(
     fun setCustomKeywords(keywords: String) {
         val keywordsList = keywords
             .split(",")
-            .map { it.trim() }
+            .map { it.trim().lowercase() }
             .filter { it.isNotEmpty() }
 
         emergencyDetector.saveUserKeywords(keywordsList)
-
         _state.value = _state.value.copy(customKeywords = keywords)
 
         android.util.Log.d("SettingsViewModel", "🔑 Keywords guardadas: ${keywordsList.size}")
-        android.util.Log.d("SettingsViewModel", "   Lista: ${keywordsList.joinToString()}")
-
         showMessage("✅ Palabras clave guardadas")
+    }
+
+    /**
+     * Guarda nombres de familia
+     */
+    fun setFamilyNames(names: String) {
+        prefs.edit().putString(PREF_FAMILY_NAMES, names).apply()
+        _state.value = _state.value.copy(familyNames = names)
+
+        // También guardar en UserPreferences para SecretaryModeManager
+        viewModelScope.launch {
+            val namesSet = names
+                .split(",")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+                .toSet()
+            userPreferences.setFamilyNames(namesSet)
+        }
+
+        android.util.Log.d("SettingsViewModel", "👨‍👩‍👧 Nombres de familia guardados")
+        showMessage("✅ Nombres de familia guardados")
+    }
+
+    /**
+     * Guarda nombre del usuario
+     */
+    fun setUserName(name: String) {
+        prefs.edit().putString(PREF_USER_NAME, name).apply()
+        _state.value = _state.value.copy(userName = name)
+
+        viewModelScope.launch {
+            userPreferences.setUserName(name)
+        }
+
+        android.util.Log.d("SettingsViewModel", "👤 Nombre de usuario: $name")
+        showMessage("✅ Nombre guardado")
     }
 
     /**
@@ -160,21 +273,27 @@ class SettingsViewModel @Inject constructor(
     fun clearCallHistory() {
         viewModelScope.launch {
             try {
-                val deleted = withContext(Dispatchers.IO) {
-                    context.contentResolver.delete(
-                        CallLog.Calls.CONTENT_URI,
-                        null,
-                        null
-                    )
+                // Limpiar historial de SpamStopper
+                withContext(Dispatchers.IO) {
+                    blockedCallDao.deleteAll()
                 }
 
-                android.util.Log.d("SettingsViewModel", "🗑️ Historial eliminado: $deleted llamadas")
+                // Intentar limpiar call log del sistema
+                val deleted = withContext(Dispatchers.IO) {
+                    try {
+                        context.contentResolver.delete(
+                            CallLog.Calls.CONTENT_URI,
+                            null,
+                            null
+                        )
+                    } catch (e: SecurityException) {
+                        android.util.Log.w("SettingsViewModel", "Sin permiso WRITE_CALL_LOG")
+                        0
+                    }
+                }
 
-                showMessage("✅ Historial eliminado ($deleted llamadas)")
-
-            } catch (e: SecurityException) {
-                android.util.Log.e("SettingsViewModel", "❌ Sin permiso WRITE_CALL_LOG", e)
-                showMessage("❌ Permiso denegado")
+                android.util.Log.d("SettingsViewModel", "🗑️ Historial eliminado")
+                showMessage("✅ Historial eliminado")
 
             } catch (e: Exception) {
                 android.util.Log.e("SettingsViewModel", "❌ Error eliminando historial", e)
@@ -183,36 +302,18 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Marca que se deben solicitar permisos
-     */
     fun requestPermissions() {
         _state.value = _state.value.copy(needsPermissionRequest = true)
-        android.util.Log.d("SettingsViewModel", "🔐 Solicitando permisos al usuario...")
     }
 
-    /**
-     * Limpia flag de solicitud de permisos
-     */
     fun clearPermissionRequest() {
         _state.value = _state.value.copy(needsPermissionRequest = false)
     }
 
-    /**
-     * Muestra un mensaje temporal
-     */
     private fun showMessage(message: String) {
         _state.value = _state.value.copy(snackbarMessage = message)
-
-        viewModelScope.launch {
-            kotlinx.coroutines.delay(3000)
-            _state.value = _state.value.copy(snackbarMessage = null)
-        }
     }
 
-    /**
-     * Limpia el mensaje
-     */
     fun clearMessage() {
         _state.value = _state.value.copy(snackbarMessage = null)
     }

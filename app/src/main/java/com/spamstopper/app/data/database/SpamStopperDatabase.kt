@@ -17,7 +17,7 @@ import net.sqlcipher.database.SupportFactory
  */
 @Database(
     entities = [BlockedCall::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

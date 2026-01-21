@@ -18,6 +18,8 @@ import javax.inject.Singleton
  * 2. Captura y analiza audio en tiempo real
  * 3. Detecta spam/robots vs llamadas legítimas
  * 4. Decide si alertar al usuario o colgar silenciosamente
+ * 
+ * ACTUALIZADO: Enero 2026 - Pasa contexto a AudioCaptureManager para altavoz
  */
 @Singleton
 class SecretaryModeManager @Inject constructor(
@@ -146,8 +148,10 @@ class SecretaryModeManager @Inject constructor(
                 Log.d(TAG, "📋 Config: userName=$userName, familyNames=$familyNames")
                 Log.d(TAG, "⏱️ Duración análisis: ${analysisDuration/1000}s")
 
-                // Inicializar captura de audio
-                if (!audioCaptureManager.initialize()) {
+                // ============================================
+                // IMPORTANTE: Pasar contexto para activar altavoz
+                // ============================================
+                if (!audioCaptureManager.initialize(context)) {
                     Log.e(TAG, "❌ Error inicializando captura de audio")
                     emitResult(AnalysisResult(
                         decision = CallClassification.UNCERTAIN,
@@ -169,7 +173,7 @@ class SecretaryModeManager @Inject constructor(
                 var chunkCount = 0
 
                 while (isAnalyzing && elapsedTime < analysisDuration) {
-                    // Capturar chunk de audio (2 segundos)
+                    // Capturar chunk de audio (2 segundos) - contexto ya pasado en initialize
                     val audioChunk = audioCaptureManager.captureAudio(2)
 
                     if (audioChunk != null && audioChunk.isNotEmpty()) {

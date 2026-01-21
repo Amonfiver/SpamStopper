@@ -536,6 +536,7 @@ class SpamInCallService : InCallService() {
 
     fun hangUp() {
         currentCall?.disconnect()
+        stopRinging()
     }
 
     fun setSpeakerOn(on: Boolean) {
@@ -544,6 +545,26 @@ class SpamInCallService : InCallService() {
 
     fun setMuteOn(on: Boolean) {
         audioManager?.isMicrophoneMute = on
+    }
+
+    /**
+     * Llamado cuando el usuario contesta una llamada verificada por Secretary Mode.
+     * Para el tono y restaura el audio normal.
+     */
+    fun userAnsweredVerifiedCall() {
+        android.util.Log.d(TAG, "✅ Usuario contestó llamada verificada - parando tono")
+        
+        // Parar el tono
+        stopRinging()
+        
+        // Restaurar audio normal
+        audioManager?.mode = AudioManager.MODE_IN_COMMUNICATION
+        val maxVolume = audioManager?.getStreamMaxVolume(AudioManager.STREAM_VOICE_CALL) ?: 7
+        audioManager?.setStreamVolume(AudioManager.STREAM_VOICE_CALL, maxVolume, 0)
+        audioManager?.isSpeakerphoneOn = false
+        
+        // Cancelar notificación
+        cancelNotification()
     }
 
     private fun getStateName(s: Int) = when(s) {
